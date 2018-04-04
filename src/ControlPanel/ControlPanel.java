@@ -36,6 +36,7 @@ public class ControlPanel extends Thread
                 Integer floor = controller.getRequestedFloor();
                 if (floor != null) {
                     this.requestedFloor = floor;
+                    this.requestedFloor = null;
                 }
             }
         }

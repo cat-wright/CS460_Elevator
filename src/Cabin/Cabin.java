@@ -14,7 +14,7 @@ public class Cabin {
     this.isMoving = false;
   }
 
-  public void setCabinLocation(int cabinLocation) {
+  public void setCabinLocation() {
     this.cabinLocation = cabinLocation;
   }
 
@@ -68,14 +68,14 @@ public class Cabin {
     System.out.println("Status of Cabin = " + isMoving );
   }
 
-  public static void main(String[] args){
+  /*public static void main(String[] args){
     Cabin cabin = new Cabin(1);
 
     cabin.moveCabin(5);
     cabin.moveCabin(3);
     cabin.moveCabin(3);
 
-  }
+  }*/
 
 
 }

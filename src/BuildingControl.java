@@ -14,6 +14,11 @@ public class BuildingControl
     
   }
   
+  private int getCabinLocation()
+  {
+    return cabin.getCabinLocation();
+  }
+  
   private boolean isCabinMoving()
   {
     if(cabin.isCabinMoving())
@@ -28,6 +33,7 @@ public class BuildingControl
     if(requestedFloor != null)
     {
       while(isCabinMoving()) {}
+      //cabin.setCabinLocation(cabin.getCabinLocation());
       cabin.moveCabin(requestedFloor);
     }
   }
@@ -43,6 +49,7 @@ public class BuildingControl
     while(true)
     {
       bP.sendToFloor();
+      
     }
   }
 }
