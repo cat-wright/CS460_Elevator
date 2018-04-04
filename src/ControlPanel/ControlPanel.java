@@ -12,7 +12,7 @@ public class ControlPanel extends Thread
     final int FLOORS = 9;
     Integer requestedFloor;
 
-    ControlPanel()
+    public ControlPanel()
     {
         new JFXPanel();
         Platform.runLater(() -> {
@@ -36,6 +36,7 @@ public class ControlPanel extends Thread
                 Integer floor = controller.getRequestedFloor();
                 if (floor != null) {
                     this.requestedFloor = floor;
+                    this.requestedFloor = null;
                 }
             }
         }
@@ -46,16 +47,12 @@ public class ControlPanel extends Thread
         controller.setCurrentFloor(floor);
     }
 
-    Integer getRequestedFloor()
+    public Integer getRequestedFloor()
     {
         return requestedFloor;
     }
 
-    public static void main(final String[] args)
-    {
-        final ControlPanel cP = new ControlPanel();
-        cP.start();
-    }
+    
 
     void shutdown()
     {
