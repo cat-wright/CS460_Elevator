@@ -6,6 +6,7 @@ import ControlPanel.ControlPanel;
 public class BuildingControl
 {
   final static ControlPanel cP = new ControlPanel();
+  final Cabin cabin = new Cabin();
   private Integer requestedFloor;
   private BuildingControl()
   {
@@ -17,7 +18,7 @@ public class BuildingControl
     requestedFloor = cP.getRequestedFloor();
     if(requestedFloor != null)
     {
-      
+      cabin.moveCabin(requestedFloor);
     }
   }
   
