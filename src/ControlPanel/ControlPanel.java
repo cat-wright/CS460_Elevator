@@ -8,8 +8,9 @@ import java.io.IOException;
 public class ControlPanel extends Thread
 {
     private volatile boolean finished = false;
-    private ControlGUI controller;
-    Integer requestedFloor = null;
+    private ControlGUI controller = null;
+    final int FLOORS = 9;
+    Integer requestedFloor;
 
     ControlPanel()
     {
@@ -17,7 +18,7 @@ public class ControlPanel extends Thread
         Platform.runLater(() -> {
             try
             {
-                controller = new ControlGUI(this);
+                controller = new ControlGUI(this, FLOORS);
             }
             catch(Exception e)
             {
@@ -31,10 +32,12 @@ public class ControlPanel extends Thread
     {
         while(!finished)
         {
-            /*if(controller.getRequestedFloor() == null)
-            {
-                requestedFloor = controller.getRequestedFloor();
-            }*/
+            if(controller != null) {
+                Integer floor = controller.getRequestedFloor();
+                if (floor != null) {
+                    this.requestedFloor = floor;
+                }
+            }
         }
     }
 
