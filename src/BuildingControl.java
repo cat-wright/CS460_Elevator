@@ -9,10 +9,13 @@ public class BuildingControl
   final static ControlPanel cP = new ControlPanel();
   Cabin cabin = new Cabin(1);
   private Integer requestedFloor;
+  private Integer currentFloor;
   private BuildingControl()
   {
     
   }
+
+
   
   
   private boolean isCabinMoving()
@@ -23,16 +26,20 @@ public class BuildingControl
     }
     else return false;
   }
+
+  private void setCurrentFloor(Integer floor) { this.currentFloor = floor; }
   
   
   private void sendToFloor()
   {
     requestedFloor = cP.getRequestedFloor();
-    if(requestedFloor != null)
+    if(requestedFloor != null && requestedFloor != currentFloor)
     {
       while(isCabinMoving()) {}
       
       cabin.moveCabin(requestedFloor);
+      currentFloor = cabin.getCabinLocation();
+      cP.setCurrentFloor(currentFloor);
     }
   }
   

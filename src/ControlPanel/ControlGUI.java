@@ -117,7 +117,11 @@ public class ControlGUI extends Stage {
         return new Pane(imageView, cF);
     }
 
-    void setCurrentFloor(Integer floor) { this.currentFloor = floor; }
+    void updateCurrentFloor(Integer floor)
+    {
+        this.currentFloor = floor;
+        System.out.println(currentFloor);
+    }
 
     Integer getRequestedFloor() { return requestedFloor; }
 }

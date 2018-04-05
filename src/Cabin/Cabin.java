@@ -5,7 +5,7 @@ package Cabin;
  */
 public class Cabin {
 
-  private int cabinLocation;
+  private Integer cabinLocation;
   private boolean isMoving;
   private int maxFloor = 16;
 
@@ -22,7 +22,7 @@ public class Cabin {
     isMoving = moving;
   }
 
-  public int getCabinLocation() {
+  public Integer getCabinLocation() {
     return cabinLocation;
   }
 
@@ -62,8 +62,10 @@ public class Cabin {
   }
 
   public void currentLocation(){
+
     System.out.println("Current Location Is Floor " + cabinLocation);
   }
+
   public void printIsMoving(){
     System.out.println("Status of Cabin = " + isMoving );
   }

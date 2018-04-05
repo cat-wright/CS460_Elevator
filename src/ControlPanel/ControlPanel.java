@@ -42,17 +42,16 @@ public class ControlPanel extends Thread
         }
     }
 
-    void getCurrentFloor(Integer floor)
+    public void setCurrentFloor(Integer floor)
     {
-        controller.setCurrentFloor(floor);
+        if(controller != null) controller.updateCurrentFloor(floor);
+
     }
 
     public Integer getRequestedFloor()
     {
         return requestedFloor;
     }
-
-    
 
     void shutdown()
     {
