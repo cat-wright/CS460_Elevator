@@ -1,0 +1,9 @@
+.root {
+    -fx-background-color: #872924;
+}
+.floor_label {
+    -fx-text-fill: #ff0005;
+    -fx-font-size: 40pt;
+    -fx-font-family: Centaur;
+    -fx-font-weight: bold;
+}

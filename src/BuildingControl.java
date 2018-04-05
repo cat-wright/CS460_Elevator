@@ -10,14 +10,7 @@ public class BuildingControl
   Cabin cabin = new Cabin(1);
   private Integer requestedFloor;
   private Integer currentFloor;
-  private BuildingControl()
-  {
-    
-  }
 
-
-  
-  
   private boolean isCabinMoving()
   {
     if(cabin.isCabinMoving())
@@ -28,8 +21,7 @@ public class BuildingControl
   }
 
   private void setCurrentFloor(Integer floor) { this.currentFloor = floor; }
-  
-  
+
   private void sendToFloor()
   {
     requestedFloor = cP.getRequestedFloor();
@@ -42,10 +34,6 @@ public class BuildingControl
       cP.setCurrentFloor(currentFloor);
     }
   }
-  
-  
-  
-  
   
   public static void main(final String[] args)
   {

@@ -1,5 +1,6 @@
 package ControlPanel;
 
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -40,7 +41,11 @@ public class ControlGUI extends Stage {
         });
 
         NUM_FLOORS = floors;
+        repaint();
+    }
 
+    void repaint()
+    {
         Image img = new Image(getClass().getResource("/Elevator_Top.png").toString());
         //image height to be used
         imgHeight = img.getHeight()/RATIO;
@@ -54,7 +59,9 @@ public class ControlGUI extends Stage {
         canvas.setOnMouseClicked(e -> doAction(e, gct));
 
         VBox vBox = new VBox(top, canvas);
-        setScene(new Scene(vBox));
+        Scene scene = new Scene(vBox);
+        scene.getStylesheets().add("gui_stylesheet.css");
+        setScene(scene);
         show();
     }
 
@@ -62,9 +69,8 @@ public class ControlGUI extends Stage {
     {
         int yval = (int) Math.floor(e.getX() / blockSize);
         int xval = (int) Math.floor(e.getY() / blockSize);
-        requestedFloor = xval * cols + yval + 1;
-        System.out.println("(" + xval + ", " + yval + ")");
-        System.out.println(requestedFloor);
+        Integer floor = xval * cols + yval + 1;
+        if(floor <= NUM_FLOORS) this.requestedFloor = floor;
         setGCT(gct);
     }
 
@@ -107,19 +113,17 @@ public class ControlGUI extends Stage {
         imageView.toBack();
 
         Label cF = new Label(currentFloor.toString());
+        cF.getStyleClass().add("floor_label");
         cF.setTranslateX(labelWidth);
         cF.setTranslateY(labelHeight);
         cF.toFront();
-        cF.setTextFill(Color.RED);
-        double textSize = 50;
-        cF.setFont(Font.font("Courier", textSize));
-
         return new Pane(imageView, cF);
     }
 
     void updateCurrentFloor(Integer floor)
     {
         this.currentFloor = floor;
+        Platform.runLater(() -> repaint());
         System.out.println(currentFloor);
     }
 
