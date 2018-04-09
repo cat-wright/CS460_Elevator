@@ -1,20 +1,17 @@
-public class Request {
-    private Directions directions;
+public class Request
+{
+    private Directions direction;
     private Integer destination;
     private Type type;
 
-    public Request(){
-
-    }
-
-    public Request(Directions directions, Integer destination, Type type){
-        this.directions = directions;
+    public Request(Integer destination, Type type)
+    {
         this.destination = destination;
         this.type = type;
     }
 
-    public Integer getButtonRequest(){
-        // calls either cabin button or floor button.
-        return 0;
+    public void setDirection(Directions direction)
+    {
+        this.direction = direction;
     }
 }
