@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class CabinButton
 {
-    public Integer getRandomFloor()
+    public Request getRandomFloor()
     {
         final int MAX = 10;
         final int MIN = 1;
@@ -12,8 +12,11 @@ public class CabinButton
         Random r = new Random();
         Integer randFloor = r.nextInt(MAX - MIN + 1) + MIN;
 
-        if (r.nextDouble() < PROBABILITY) return randFloor;
+        if (r.nextDouble() < PROBABILITY)
+        {
+            return new Request(randFloor, Type.CABIN);
+        }
 
-        return -1; // no button pressed
+        return null; // no button pressed
     }
 }
