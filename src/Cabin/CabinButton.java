@@ -1,4 +1,7 @@
+package Cabin;
 import java.util.Random;
+
+import Request.*;
 
 public class CabinButton
 {

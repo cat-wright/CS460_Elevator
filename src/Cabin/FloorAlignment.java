@@ -1,3 +1,4 @@
+package Cabin;
 public class FloorAlignment {
 
     public boolean isAtFloor(Integer currentFloor, Integer destination){

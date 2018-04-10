@@ -1,3 +1,4 @@
+package Cabin;
 public class CabinRequest //extends Request
 {/**
     Directions directions;

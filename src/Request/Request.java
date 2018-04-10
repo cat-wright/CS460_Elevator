@@ -1,3 +1,4 @@
+package Request;
 public class Request
 {
     private Directions direction;
@@ -8,6 +9,11 @@ public class Request
     {
         this.destination = destination;
         this.type = type;
+    }
+
+    public Integer getDestination()
+    {
+        return destination;
     }
 
     public void setDirection(Directions direction)

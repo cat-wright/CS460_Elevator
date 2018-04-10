@@ -1,4 +1,5 @@
 package Cabin;
+import Request.*;
 
 /**
  * Created by Vincent on 4/4/2018.
@@ -59,6 +60,21 @@ public class Cabin {
     System.out.println("At Destination");
     isMoving = false;
     printIsMoving();
+  }
+
+  public Request cabinRequest(){
+    CabinButton buttonRequest = new CabinButton();
+    Request newRequest = buttonRequest.getRandomFloor();
+    if(newRequest.getDestination() > cabinLocation){
+      newRequest.setDirection(Directions.UP);
+    }
+    else if(newRequest.getDestination() < cabinLocation){
+      newRequest.setDirection(Directions.DOWN);
+    }
+    else{
+      newRequest = null;
+    }
+    return newRequest;
   }
 
   public void currentLocation(){
