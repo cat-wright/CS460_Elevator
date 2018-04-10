@@ -24,7 +24,7 @@ public class BuildingControl
 
   private void sendToFloor()
   {
-    requestedFloor = cP.getRequestedFloor();
+    requestedFloor = cP.getRequestedFloor().getDestination();
     if(requestedFloor != null && requestedFloor != currentFloor)
     {
       while(isCabinMoving()) {}

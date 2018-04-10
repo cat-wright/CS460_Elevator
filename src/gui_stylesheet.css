@@ -1,9 +1,35 @@
 .root {
-    -fx-background-color: #872924;
+    -fx-background-color: linear-gradient(#a6ffc5, #dde2dc);
+    -fx-font-size: 8pt;
+}
+.elevator_label {
+    -fx-text-fill: #898282;
+    -fx-font-size: 20pt;
+    -fx-font-family: "Arial Black";
 }
 .floor_label {
     -fx-text-fill: #ff0005;
-    -fx-font-size: 40pt;
-    -fx-font-family: Centaur;
+    -fx-font-size: 30pt;
+    -fx-font-family: "Engravers MT";
     -fx-font-weight: bold;
+}
+.moving_label {
+    -fx-text-fill: #990005;
+    -fx-font-size: 20pt;
+    -fx-font-family: "Courier New"
+}
+.title_label {
+    -fx-font-family: "Book Antiqua";
+    -fx-text-fill: #000000;
+    -fx-font-size: 10pt;
+}
+.door_label {
+    -fx-font-size: 8pt;
+}
+.fire_alarm {
+    -fx-font-family: "Arial Black";
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+    -fx-font-size: 20pt;
+    -fx-background-color: linear-gradient(#ffae00, red);
 }

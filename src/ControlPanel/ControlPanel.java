@@ -3,14 +3,19 @@ package ControlPanel;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 
-import java.io.IOException;
+import Request.*;
+import java.util.ArrayList;
 
 public class ControlPanel extends Thread
 {
     private volatile boolean finished = false;
     private ControlGUI controller = null;
-    final int FLOORS = 9;
-    Integer requestedFloor;
+    private final int FLOORS = 10;
+    private final int ELEVATORS = 4;
+    private Integer requestedFloor;
+    private Integer currentFloor = 1;
+    private ArrayList<Request> disabledButtons;
+    private Request currentRequest;
 
     public ControlPanel()
     {
@@ -18,7 +23,8 @@ public class ControlPanel extends Thread
         Platform.runLater(() -> {
             try
             {
-                controller = new ControlGUI(this, FLOORS);
+                controller = new ControlGUI(this, FLOORS, ELEVATORS);
+                controller.updateCurrentFloor(currentFloor);
             }
             catch(Exception e)
             {
@@ -38,6 +44,11 @@ public class ControlPanel extends Thread
                     this.requestedFloor = floor;
                     this.requestedFloor = null;
                 }
+                disabledButtons = controller.getDisabledButtons();
+                if(currentRequest != null)
+                {
+                    controller.setRequest(currentRequest);
+                }
             }
         }
     }
@@ -45,12 +56,26 @@ public class ControlPanel extends Thread
     public void setCurrentFloor(Integer floor)
     {
         if(controller != null) controller.updateCurrentFloor(floor);
-
     }
 
-    public Integer getRequestedFloor()
+    //This is the method to be used by building control to check if a button is available and can be requested
+    public ArrayList<Request> getDisabledButtons()
     {
-        return requestedFloor;
+        return disabledButtons;
+    }
+
+    //This is the method used by buildingControl to send the control panel where the cabin will travel
+    public void setCurrentRequest(Request request)
+    {
+        this.currentRequest = request;
+    }
+
+    //This is returned from the GUI to be added to the queue.  Building control needs to check for this return
+    //and add the request.
+    public Request getRequestedFloor()
+    {
+        Request guiRequest = new Request(requestedFloor, Type.CABIN); //Still needs to be implemented for Floor requests
+        return guiRequest;
     }
 
     void shutdown()
