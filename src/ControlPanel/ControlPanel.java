@@ -113,7 +113,7 @@ public class ControlPanel extends Thread
      * @param currentFloor the current floor the cabin is on
      * @param direction the current direction of the cabin
      */
-    void buildElevatorSpecs(boolean isMoving, Request currentTakenRequest, Integer currentFloor, Directions direction)
+    public void buildElevatorSpecs(boolean isMoving, Request currentTakenRequest, Integer currentFloor, Directions direction)
     {
         specs = new ElevatorSpecs(isMoving, currentTakenRequest, currentFloor, direction);
     }
