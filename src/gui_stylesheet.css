@@ -14,8 +14,8 @@
     -fx-font-weight: bold;
 }
 .moving_label {
-    -fx-text-fill: #990005;
-    -fx-font-size: 20pt;
+    -fx-text-fill: #ff0009;
+    -fx-font-size: 5pt;
     -fx-font-family: "Courier New"
 }
 .title_label {

@@ -4,26 +4,31 @@ import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 
 import Request.*;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class ControlPanel extends Thread
 {
     private volatile boolean finished = false;
-    private ControlGUI controller = null;
-    private final int FLOORS = 10;
-    private final int ELEVATORS = 4;
-    private Integer requestedFloor;
+    private ControlGUI controller;
+    private int floors, elevators;
     private Integer currentFloor = 1;
-    private ArrayList<Request> disabledButtons;
-    private Request currentRequest;
+    private ElevatorSpecs specs;
+    private LinkedList<Request> disabledButtons = new LinkedList<>();
+    //private LinkedList<Request> currentRequests = new LinkedList<>(); //will be implemented in a later version
+    private Request currentTakenRequest;
 
-    public ControlPanel()
+    private boolean maintenanceKey = false;
+    private boolean fireAlarm = false;
+
+    public ControlPanel(int floors, int elevators)
     {
+        this.floors = floors;
+        this.elevators = elevators;
         new JFXPanel();
         Platform.runLater(() -> {
             try
             {
-                controller = new ControlGUI(this, FLOORS, ELEVATORS);
+                controller = new ControlGUI(this, floors, elevators);
                 controller.updateCurrentFloor(currentFloor);
             }
             catch(Exception e)
@@ -39,47 +44,96 @@ public class ControlPanel extends Thread
         while(!finished)
         {
             if(controller != null) {
-                Integer floor = controller.getRequestedFloor();
-                if (floor != null) {
-                    this.requestedFloor = floor;
-                    this.requestedFloor = null;
+                currentTakenRequest = controller.getRequest();
+                if(currentTakenRequest != null) {
+                    controller.setRequest(currentTakenRequest);
+                    if(specs != null) controller.getSpecs(specs);
+                    currentTakenRequest = null;
                 }
                 disabledButtons = controller.getDisabledButtons();
-                if(currentRequest != null)
-                {
-                    controller.setRequest(currentRequest);
+                if(controller.getMaintenanceKey()) maintenanceKey = true;
+                else maintenanceKey = false;
+                if(controller.getFireAlarm()) {
+                    System.out.println("FIRE ALARM ACTIVATED");
+                    fireAlarm = true;
+                    try {
+                        sleep(3000);
+                    }
+                    catch(InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    controller.setFireAlarm(false);
                 }
             }
         }
     }
 
-    public void setCurrentFloor(Integer floor)
+    //INFORMATION PASSED FROM CONTROL PANEL TO BUILDING CONTROL
+    /**
+     * returns whether the fire alarm has been pressed on the interface
+     * @return true if fire alarm was pressed
+     */
+    boolean isFireAlarm()
     {
-        if(controller != null) controller.updateCurrentFloor(floor);
+        return fireAlarm;
     }
 
-    //This is the method to be used by building control to check if a button is available and can be requested
-    public ArrayList<Request> getDisabledButtons()
+    /**
+     * returns whether the maintenance key is currently in the elevator
+     * @return true if maintenance key is in the elevator
+     */
+    boolean isMaintenanceKey() { return maintenanceKey; }
+
+    /**
+     * returns a list of all buttons that are currently disabled/not able to be pressed.  All are
+     * expressed as requests, with the type, destination, and direction signifying which button
+     * @return Linked List of Requests
+     */
+    public LinkedList<Request> getDisabledButtons()
     {
         return disabledButtons;
     }
 
-    //This is the method used by buildingControl to send the control panel where the cabin will travel
+    /**
+     * returns the current request from the interface to be added to the queue in BuildingControl
+     * @return a request to travel to a floor
+     */
+    public synchronized Request getRequest()
+    {
+        return controller.getRequest();
+    }
+    //
+
+    //INFORMATION PASSED FROM BUILDING CONTROL TO CONTROL PANEL
+    /**
+     * called by building control with all current information about the elevator (currently only one elevator)
+     * @param isMoving true if the elevator is currently in motion
+     * @param currentTakenRequest the request currently being handled/where the cabin is going
+     * @param currentFloor the current floor the cabin is on
+     * @param direction the current direction of the cabin
+     */
+    void buildElevatorSpecs(boolean isMoving, Request currentTakenRequest, Integer currentFloor, Directions direction)
+    {
+        specs = new ElevatorSpecs(isMoving, currentTakenRequest, currentFloor, direction);
+    }
+    //
+
+    //used in testing currently
     public void setCurrentRequest(Request request)
     {
-        this.currentRequest = request;
-    }
-
-    //This is returned from the GUI to be added to the queue.  Building control needs to check for this return
-    //and add the request.
-    public Request getRequestedFloor()
-    {
-        Request guiRequest = new Request(requestedFloor, Type.CABIN); //Still needs to be implemented for Floor requests
-        return guiRequest;
+        this.currentTakenRequest = request;
     }
 
     void shutdown()
     {
         finished = true;
     }
+
+    //used in testing
+//    public static void main(String[] args)
+//    {
+//        ControlPanel controlPanel = new ControlPanel(10, 4);
+//        controlPanel.start();
+//    }
 }
