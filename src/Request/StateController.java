@@ -68,7 +68,7 @@ public class StateController
       return 0;
     }
   };
-  PriorityQueue<Request> requestQueue = new PriorityQueue<Request>(0,requestComparator);
+  PriorityQueue<Request> requestQueue = new PriorityQueue<Request>(requestComparator);
   public StateController(Cabin cabin)
   {
     this.cabin = cabin;
@@ -81,7 +81,10 @@ public class StateController
   
   public Request getRequest()
   {
-    return requestQueue.remove();
+    if(requestQueue.peek() != null) {
+      return requestQueue.remove();
+    }
+    return null;
   }
   
   

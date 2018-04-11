@@ -38,13 +38,17 @@ public class BuildingControl
   private void sendToFloor()
   {
     Request currentRequest = sC.getRequest();
-    currentFloor = cabin.getCabinLocation();
-    cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
-    while(isCabinMoving()) {}
-    cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
-    cabin.moveCabin(currentRequest.getDestination());
-    cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
-    currentFloor = cabin.getCabinLocation();
+
+    if(currentRequest != null) {
+        currentFloor = cabin.getCabinLocation();
+        cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
+        while (isCabinMoving()) {
+        }
+        cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
+        cabin.moveCabin(currentRequest.getDestination());
+        cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
+        currentFloor = cabin.getCabinLocation();
+    }
       //cP.setCurrentFloor(currentFloor);
     
   }

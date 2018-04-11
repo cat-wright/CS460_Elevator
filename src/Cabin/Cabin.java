@@ -68,10 +68,10 @@ public class Cabin {
   public Request cabinRequest(){
     CabinButton buttonRequest = new CabinButton();
     Request newRequest = buttonRequest.getRandomFloor();
-    if(newRequest.getDestination() > cabinLocation){
+    if(newRequest != null && newRequest.getDestination() > cabinLocation){
       newRequest.setDirection(Directions.UP);
     }
-    else if(newRequest.getDestination() < cabinLocation){
+    else if(newRequest != null && newRequest.getDestination() < cabinLocation){
       newRequest.setDirection(Directions.DOWN);
     }
     else{
