@@ -10,11 +10,13 @@ public class Cabin {
   private boolean isMoving;
   private int maxFloor = 16;
   private Motion motion;
+  private Directions direction;
 
   public Cabin (int cabinLocation){
     this.cabinLocation = cabinLocation;
     this.isMoving = false;
     motion = new Motion();
+    direction = Directions.UP;
   }
 
   public void setCabinLocation() {
@@ -33,6 +35,10 @@ public class Cabin {
   public boolean isCabinMoving(){
     return isMoving;
   }
+  
+  public Directions getDirection() {return direction;}
+  
+  public void changeDirection(Directions d) {direction = d;}
 
   public void moveCabin(int floorToMoveTo){
     if(cabinLocation == floorToMoveTo){
@@ -43,6 +49,14 @@ public class Cabin {
     } else {
       System.out.println("Moving to floor " + floorToMoveTo);
       isMoving = true;
+      if(cabinLocation < floorToMoveTo)
+      {
+        direction = Directions.UP;
+      }
+      else
+      {
+        direction = Directions.DOWN;
+      }
       motion.moveCabin(floorToMoveTo);
     }
 
