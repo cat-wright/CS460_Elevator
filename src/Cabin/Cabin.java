@@ -12,7 +12,7 @@ public class Cabin {
   private Motion motion;
   private Directions direction;
 
-  public Cabin (int cabinLocation){
+  public Cabin (Integer cabinLocation){
     this.cabinLocation = cabinLocation;
     this.isMoving = false;
     motion = new Motion();

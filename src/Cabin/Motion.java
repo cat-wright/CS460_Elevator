@@ -2,7 +2,7 @@ package Cabin;
 
 public class Motion extends Thread{
 
-    private int cabinLocation = 1;
+    private Integer cabinLocation = 1;
     private Motor motor;
 
 

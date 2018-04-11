@@ -2,11 +2,11 @@ package Cabin;
 
 public class Motor extends Thread{
 
-    private int currentFloor;
+    private Integer currentFloor;
     private int requestFloor;
     private boolean atFloor = false;
 
-    public Motor(int floorDestination, int startingFloor) {
+    public Motor(int floorDestination, Integer startingFloor) {
         currentFloor = startingFloor;
         requestFloor = floorDestination;
 
@@ -16,13 +16,13 @@ public class Motor extends Thread{
     public void run() {
         atFloor = false;
         if (requestFloor < currentFloor) {
-            for (int i = currentFloor; i >= requestFloor; i--) {
+            for (Integer i = currentFloor; i >= requestFloor; i--) {
                 sleep(1);
                 currentFloor = i;
                 System.out.println("Current Floor: " + i);
             }
         } else {
-            for (int i = currentFloor; i <= requestFloor; i++) {
+            for (Integer i = currentFloor; i <= requestFloor; i++) {
                 sleep(1);
                 currentFloor = i;
                 System.out.println("Current Floor: " + i);
@@ -37,7 +37,7 @@ public class Motor extends Thread{
     }
 
 
-    public int getCurrentFloor() {
+    public Integer getCurrentFloor() {
         return currentFloor;
     }
 

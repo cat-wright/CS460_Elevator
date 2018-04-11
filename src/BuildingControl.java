@@ -14,6 +14,11 @@ public class BuildingControl
   private Request requestedFloor;
   private Integer currentFloor;
 
+  BuildingControl(Integer currentFloor)
+  {
+      this.currentFloor = currentFloor;
+  }
+
   private boolean isCabinMoving()
   {
     if(cabin.isCabinMoving())
@@ -40,25 +45,23 @@ public class BuildingControl
     Request currentRequest = sC.getRequest();
 
     if(currentRequest != null) {
-        currentFloor = cabin.getCabinLocation();
+
         cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
         while (isCabinMoving()) {
         }
         cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
         cabin.moveCabin(currentRequest.getDestination());
-        cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
         currentFloor = cabin.getCabinLocation();
+        cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
+
     }
       //cP.setCurrentFloor(currentFloor);
     
   }
-  public void updateElevator()
-  {
-    
-  }
+
   public static void main(final String[] args)
   {
-    final BuildingControl bP = new BuildingControl();
+    BuildingControl bP = new BuildingControl(1);
     cP.start();
     while(true)
     {
