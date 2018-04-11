@@ -9,10 +9,12 @@ public class Cabin {
   private Integer cabinLocation;
   private boolean isMoving;
   private int maxFloor = 16;
+  private Motion motion;
 
   public Cabin (int cabinLocation){
     this.cabinLocation = cabinLocation;
     this.isMoving = false;
+    motion = new Motion();
   }
 
   public void setCabinLocation() {
@@ -24,7 +26,8 @@ public class Cabin {
   }
 
   public Integer getCabinLocation() {
-    return cabinLocation;
+      cabinLocation = motion.getCabinLocation();
+      return cabinLocation;
   }
 
   public boolean isCabinMoving(){
@@ -37,24 +40,10 @@ public class Cabin {
       isMoving = false;
       printIsMoving();
       return;
-    }
-    else if(cabinLocation < floorToMoveTo) {
+    } else {
       System.out.println("Moving to floor " + floorToMoveTo);
       isMoving = true;
-      for(int i = cabinLocation; i <= floorToMoveTo; i++){
-        printIsMoving();
-        cabinLocation = i;
-        currentLocation();
-      }
-    }
-    else {
-      System.out.println("Moving to floor " + floorToMoveTo);
-      isMoving = true;
-      for (int i = cabinLocation; i >= floorToMoveTo; i--) {
-        printIsMoving();
-        cabinLocation = i;
-        currentLocation();
-      }
+      motion.moveCabin(floorToMoveTo);
     }
 
     System.out.println("At Destination");
