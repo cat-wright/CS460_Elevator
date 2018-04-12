@@ -3,6 +3,9 @@ import Cabin.Cabin;
 import Request.Request;
 import Request.StateController;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
  * Created by Dominic on 4/4/2018.
  */
@@ -38,6 +41,12 @@ public class BuildingControl
     {
       sC.addToQue(requestedFloor);
     }
+
+    /*requestedFloor = cP.getRequest();
+    if(requestedFloor != null) //&& requestedFloor.getDestination() != currentFloor)
+      {
+          sC.addToQue(requestedFloor);
+      }*/
   }
   
   private void sendToFloor()
@@ -46,10 +55,10 @@ public class BuildingControl
 
     if(currentRequest != null) {
 
-        cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
+        //cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
         while (isCabinMoving()) {
         }
-        cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
+        //cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
         cabin.moveCabin(currentRequest.getDestination());
         currentFloor = cabin.getCabinLocation();
         cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
@@ -59,15 +68,34 @@ public class BuildingControl
     
   }
 
+    private static void testSwingTimer(){
+        BuildingControl bP = new BuildingControl(1);
+        javax.swing.Timer swingTimer = new javax.swing.Timer(
+                100,
+                new ActionListener(){
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        bP.checkRequests();
+                        bP.sendToFloor();
+                    }
+                });
+
+        swingTimer.start();
+    }
   public static void main(final String[] args)
   {
-    BuildingControl bP = new BuildingControl(1);
-    cP.start();
-    while(true)
+      BuildingControl bP = new BuildingControl(1);
+      cP.start();
+      testSwingTimer();
+
+
+    /*while(true)
     {
       bP.checkRequests();
       bP.sendToFloor();
       
-    }
+    }*/
   }
+
 }

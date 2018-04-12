@@ -19,17 +19,17 @@ public class Motor extends Thread{
             for (Integer i = currentFloor; i >= requestFloor; i--) {
                 sleep(1);
                 currentFloor = i;
-                System.out.println("Current Floor: " + i);
+                //System.out.println("Current Floor: " + i);
             }
         } else {
             for (Integer i = currentFloor; i <= requestFloor; i++) {
                 sleep(1);
                 currentFloor = i;
-                System.out.println("Current Floor: " + i);
+                //System.out.println("Current Floor: " + i);
             }
         }
         atFloor = true;
-        System.out.println("Done");
+        //System.out.println("Done");
     }
 
     public boolean getAtFloor() {
