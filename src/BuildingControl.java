@@ -71,7 +71,7 @@ public class BuildingControl
     private static void testSwingTimer(){
         BuildingControl bP = new BuildingControl(1);
         javax.swing.Timer swingTimer = new javax.swing.Timer(
-                100,
+                50,
                 new ActionListener(){
 
                     @Override
@@ -80,7 +80,7 @@ public class BuildingControl
                         bP.sendToFloor();
                     }
                 });
-        swingTimer.setInitialDelay(5000);
+        swingTimer.setInitialDelay(5000 );
         swingTimer.start();
     }
   public static void main(final String[] args)
