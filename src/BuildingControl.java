@@ -42,11 +42,11 @@ public class BuildingControl
       sC.addToQue(requestedFloor);
     }
 
-    /*requestedFloor = cP.getRequest();
+    requestedFloor = cP.getRequest();
     if(requestedFloor != null) //&& requestedFloor.getDestination() != currentFloor)
       {
           sC.addToQue(requestedFloor);
-      }*/
+      }
   }
   
   private void sendToFloor()
@@ -80,7 +80,7 @@ public class BuildingControl
                         bP.sendToFloor();
                     }
                 });
-
+        swingTimer.setInitialDelay(5000);
         swingTimer.start();
     }
   public static void main(final String[] args)
