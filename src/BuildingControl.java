@@ -51,15 +51,16 @@ public class BuildingControl
   
   private void sendToFloor()
   {
+      while (isCabinMoving()) { }
     Request currentRequest = sC.getRequest();
 
     if(currentRequest != null) {
 
         //cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
-        while (isCabinMoving()) {
-        }
+
         //cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
         cabin.moveCabin(currentRequest.getDestination());
+        while (isCabinMoving()) { }
         currentFloor = cabin.getCabinLocation();
         cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
 
@@ -71,7 +72,7 @@ public class BuildingControl
     private static void testSwingTimer(){
         BuildingControl bP = new BuildingControl(1);
         javax.swing.Timer swingTimer = new javax.swing.Timer(
-                50,
+                10,
                 new ActionListener(){
 
                     @Override

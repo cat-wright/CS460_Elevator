@@ -17,13 +17,13 @@ public class Motor extends Thread{
         atFloor = false;
         if (requestFloor < currentFloor) {
             for (Integer i = currentFloor; i >= requestFloor; i--) {
-                sleep(1);
+                sleep(10);
                 currentFloor = i;
                 //System.out.println("Current Floor: " + i);
             }
         } else {
             for (Integer i = currentFloor; i <= requestFloor; i++) {
-                sleep(1);
+                sleep(10);
                 currentFloor = i;
                 //System.out.println("Current Floor: " + i);
             }
