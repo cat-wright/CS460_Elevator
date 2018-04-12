@@ -103,6 +103,7 @@ class ElevatorGUI extends VBox {
             gridPane.add(floorButton, i, 0);
         }
 
+        if(specs != null) this.currentRequest = specs.getCurrentRequest();
         if(currentRequest != null) {
             StackPane onFloorLight = changeLight(buttonOn, currentRequest);
             if(onFloorLight != null) gridPane.add(onFloorLight, currentRequest.getDestination()-1, 0);
@@ -152,6 +153,7 @@ class ElevatorGUI extends VBox {
                     direction = new ImageView(downArrow);
                 }
                 ImageView imgButton = new ImageView(button);
+                if(specs != null) this.currentRequest = specs.getCurrentRequest();
                 if(currentRequest != null)
                 {
                     if(currentRequest.getType() == Type.FLOOR)

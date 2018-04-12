@@ -44,12 +44,12 @@ public class ControlPanel extends Thread
         while(!finished)
         {
             if(controller != null) {
-                currentTakenRequest = controller.getRequest();
-                if(currentTakenRequest != null) {
-                    controller.setRequest(currentTakenRequest);
-                    if(specs != null) controller.getSpecs(specs);
-                    currentTakenRequest = null;
-                }
+                //currentTakenRequest = controller.getRequest();
+                if(specs != null) controller.getSpecs(specs);
+//                if(currentTakenRequest != null) {
+//                    controller.setRequest(currentTakenRequest);
+//                    currentTakenRequest = null;
+//                }
                 disabledButtons = controller.getDisabledButtons();
                 if(controller.getMaintenanceKey()) maintenanceKey = true;
                 else maintenanceKey = false;

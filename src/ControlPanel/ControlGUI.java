@@ -22,10 +22,6 @@ class ControlGUI extends Stage {
 
     private double imgWidth;
 
-    //will be replaced by specs
-    private boolean isMoving;
-    private Enum currentDirection;
-    private Request request;
     private Integer currentFloor; //Begins at bottom floor
 
     private LinkedList<Request> disabledButtons = new LinkedList<>();
@@ -122,12 +118,6 @@ class ControlGUI extends Stage {
 //        return requestedFloor;
 //    }
 
-    synchronized void setIsMoving(boolean isMoving, Directions direction) {
-        this.isMoving = isMoving;
-        this.currentDirection = direction;
-        //Platform.runLater(() -> repaint());
-    }
-
     Request getRequest() {
         if(e1.getFlag()) {
             e1.setFlag(false);
@@ -152,17 +142,17 @@ class ControlGUI extends Stage {
         return disabledButtons;
     }
 
-    void setRequest(Request request) {
-        this.request = request;
-        e1.setCurrentRequest(request);
-        Platform.runLater(() -> repaint());
-    }
+//    void setRequest(Request request) {
+//        this.request = request;
+//        e1.setCurrentRequest(request);
+//        Platform.runLater(() -> repaint());
+//    }
 
     boolean getMaintenanceKey() {
         return e1.getMaintenanceKey();
     }
 
-    void getSpecs(ElevatorSpecs specs)
+    synchronized void getSpecs(ElevatorSpecs specs)
     {
         e1.setSpecs(specs);
         Platform.runLater(() -> repaint());

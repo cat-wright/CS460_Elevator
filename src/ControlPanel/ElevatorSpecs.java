@@ -21,31 +21,15 @@ public class ElevatorSpecs {
         return isMoving;
     }
 
-    public void setMoving(boolean moving) {
-        isMoving = moving;
-    }
-
     public Request getCurrentRequest() {
         return currentRequest;
-    }
-
-    public void setCurrentRequest(Request currentRequest) {
-        this.currentRequest = currentRequest;
     }
 
     public Integer getCurrentFloor() {
         return currentFloor;
     }
 
-    public void setCurrentFloor(Integer currentFloor) {
-        this.currentFloor = currentFloor;
-    }
-
     public Directions getDirection() {
         return direction;
-    }
-
-    public void setDirection(Directions direction) {
-        this.direction = direction;
     }
 }
