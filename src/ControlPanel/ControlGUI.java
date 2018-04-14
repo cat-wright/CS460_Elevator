@@ -1,6 +1,9 @@
 package ControlPanel;
 
 import Request.*;
+import javafx.animation.AnimationTimer;
+import javafx.animation.Timeline;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,16 +15,11 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.util.LinkedList;
 
-class ControlGUI extends Stage {
+class ControlGUI extends Application {
 
-    private int NUM_FLOORS, NUM_ELEVS;
     private final int maxElevators = 4;
-    //private Integer requestedFloor;
-
     private boolean fireAlarm = false;
-
     private double imgWidth;
-
     private Integer currentFloor; //Begins at bottom floor
 
     private LinkedList<Request> disabledButtons = new LinkedList<>();
@@ -29,16 +27,9 @@ class ControlGUI extends Stage {
 
     private ElevatorGUI e1, e2, e3, e4;
     private ElevatorGUI[] elevatorGUIS = new ElevatorGUI[maxElevators];
-    ;
+    private HBox elevatorPanels;
 
     ControlGUI(final ControlPanel controlPanel, int floors, int elevators) {
-        setOnCloseRequest(e -> {
-            controlPanel.shutdown();
-            close();
-        });
-
-        NUM_FLOORS = floors;
-        NUM_ELEVS = elevators;
         imgWidth = Toolkit.getDefaultToolkit().getScreenSize().width / 5;
         e1 = (elevators > 0) ? new ElevatorGUI(floors, 1, false, imgWidth) : new ElevatorGUI(floors, 1, true, imgWidth);
         e2 = (elevators > 1) ? new ElevatorGUI(floors, 2, false, imgWidth) : new ElevatorGUI(floors, 2, true, imgWidth);
@@ -49,45 +40,11 @@ class ControlGUI extends Stage {
         elevatorGUIS[2] = e3;
         elevatorGUIS[3] = e4;
 
-        repaint();
     }
 
-//    private synchronized void updateElevators() {
-//        for (int i = 0; i < NUM_ELEVS; i++) {
-//            if(elevatorGUIS[i] != null)
-//            {
-//                if(elevatorGUIS[i].getRequestedFloors().size() > 0)
-//                {
-//                    if (elevatorGUIS[i].getRequestedFloors() != null) currentRequests.addAll(elevatorGUIS[i].getRequestedFloors());
-//                }
-//                if(elevatorGUIS[i].getDisabledButtons().size() > 0)
-//                {
-//                    if (elevatorGUIS[i].getDisabledButtons() != null) disabledButtons.addAll(elevatorGUIS[i].getDisabledButtons());
-//                }
-//            }
-//        }
-//    }
-
-//    void checkForRepaint()
-//    {
-//        //updateElevators();
-//        for(int i = 0; i < NUM_ELEVS; i++)
-//        {
-//            if(elevatorGUIS[i] != null)
-//            {
-//                if(elevatorGUIS[i].getFlag()) {
-//                    Platform.runLater(() -> repaint());
-//                    elevatorGUIS[i].setFlag(false);
-//                }
-//                if(elevatorGUIS[i].getAbleFlag()) {
-//                    Platform.runLater(() -> repaint());
-//                    elevatorGUIS[i].setAbleFlag(false);
-//                }
-//            }
-//        }
-//    }
-
-    void repaint() {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.setOnCloseRequest(e -> primaryStage.close());
         VBox containingScreen = new VBox();
         containingScreen.setSpacing(10);
 
@@ -96,7 +53,16 @@ class ControlGUI extends Stage {
         emergencyButton.getStyleClass().add("fire_alarm");
         emergencyButton.setOnAction(e -> fireAlarm = true);
 
-        HBox elevatorPanels = new HBox(e1.getElevatorVBox(), e2.getElevatorVBox(), e3.getElevatorVBox(), e4.getElevatorVBox());
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                elevatorPanels = new HBox(e1.getElevatorVBox(), e2.getElevatorVBox(), e3.getElevatorVBox(), e4.getElevatorVBox());
+                primaryStage.show();
+            }
+        };
+
+        timer.start();
+
         elevatorPanels.setSpacing(20);
         containingScreen.getChildren().addAll(elevatorPanels, emergencyButton);
         containingScreen.setAlignment(Pos.CENTER);
@@ -104,19 +70,22 @@ class ControlGUI extends Stage {
 
         Scene scene = new Scene(containingScreen);
         scene.getStylesheets().add("gui_stylesheet.css");
-        setScene(scene);
-        show();
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
+    synchronized void setSpecs(ElevatorSpecs specs)
+    {
+        e1.setSpecs(specs);
+    }
+
+
+    //
     void updateCurrentFloor(Integer floor) {
         this.currentFloor = floor;
         //Platform.runLater(() -> repaint());
         System.out.println(currentFloor);
     }
-
-//    Integer getRequestedFloor() {
-//        return requestedFloor;
-//    }
 
     Request getRequest() {
         if(e1.getFlag()) {
@@ -136,26 +105,13 @@ class ControlGUI extends Stage {
     LinkedList<Request> getDisabledButtons() {
         if(e1.getAbleFlag())
         {
-            Platform.runLater(() -> repaint());
             e1.setAbleFlag(false);
         }
         return disabledButtons;
     }
 
-//    void setRequest(Request request) {
-//        this.request = request;
-//        e1.setCurrentRequest(request);
-//        Platform.runLater(() -> repaint());
-//    }
-
     boolean getMaintenanceKey() {
         return e1.getMaintenanceKey();
-    }
-
-    synchronized void getSpecs(ElevatorSpecs specs)
-    {
-        e1.setSpecs(specs);
-        Platform.runLater(() -> repaint());
     }
 
     boolean getFireAlarm() { return fireAlarm; }

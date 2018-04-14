@@ -22,8 +22,7 @@ class ElevatorGUI extends VBox {
     private int NUM_FLOORS;
 
     private int elevatorNumber;
-    private double imgHeight;
-    private double imgWidth;
+    private double imgHeight, imgWidth;
     private double blockSize;
 
     private Request currentRequest;
@@ -38,7 +37,7 @@ class ElevatorGUI extends VBox {
     private LinkedList<Request> requestedFloors = new LinkedList<>();
 
     private VBox elevatorVBox = new VBox();
-    private ElevatorSpecs specs;
+    private ElevatorSpecs specs = new ElevatorSpecs(false, null, 1, null);
 
     ElevatorGUI(int floors, int elevatorNumber, boolean disabled, double imgWidth)
     {
@@ -47,7 +46,6 @@ class ElevatorGUI extends VBox {
         this.NUM_FLOORS = floors;
         this.elevatorNumber = elevatorNumber;
         if(disabled) currentFloor = 0;
-        repaint();
     }
 
     VBox getElevatorVBox()
@@ -78,11 +76,12 @@ class ElevatorGUI extends VBox {
 
         GridPane controls = makeControlBlock();
 
-        //VBox elevator = new VBox(elevLabel);
         elevatorVBox = new VBox(elevLabel, top, floorButtons, lobbyButtons, doorStatusLabel, doorStatus, controlPanel, controls);
         elevatorVBox.setAlignment(Pos.CENTER);
         elevatorVBox.setSpacing(5);
     }
+
+    void setSpecs(ElevatorSpecs specs) { this.specs = specs; }
 
     private GridPane floorButtonStatus()
     {
@@ -377,7 +376,5 @@ class ElevatorGUI extends VBox {
     boolean getAbleFlag() { return ableFlag; }
 
     void setAbleFlag(boolean ableFlag) { this.ableFlag = ableFlag; }
-
-    void setSpecs(ElevatorSpecs specs) { this.specs = specs; }
 
 }
