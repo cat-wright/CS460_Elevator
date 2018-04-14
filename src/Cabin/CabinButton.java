@@ -5,6 +5,13 @@ import Request.*;
 
 public class CabinButton
 {
+    /**
+     * Simulates a random button press in the cabin. There is a 5% chance
+     * of successfully pressing a button. The rest of the time a null
+     * value is returned so the queue isn't overwhelmed with requests.
+     *
+     * @return a Request object or null
+     */
     public Request getRandomFloor()
     {
         final int MAX = 10;
