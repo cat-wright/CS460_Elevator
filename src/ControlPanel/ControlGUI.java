@@ -20,7 +20,6 @@ class ControlGUI extends Application {
     private final int maxElevators = 4;
     private boolean fireAlarm = false;
     private double imgWidth;
-    private Integer currentFloor; //Begins at bottom floor
 
     private LinkedList<Request> disabledButtons = new LinkedList<>();
     private LinkedList<Request> currentRequests = new LinkedList<>();
@@ -31,6 +30,7 @@ class ControlGUI extends Application {
 
     ControlGUI(final ControlPanel controlPanel, int floors, int elevators) {
         imgWidth = Toolkit.getDefaultToolkit().getScreenSize().width / 5;
+        //e1 = new ElevatorGUI(floors, 1, false, imgWidth);
         e1 = (elevators > 0) ? new ElevatorGUI(floors, 1, false, imgWidth) : new ElevatorGUI(floors, 1, true, imgWidth);
         e2 = (elevators > 1) ? new ElevatorGUI(floors, 2, false, imgWidth) : new ElevatorGUI(floors, 2, true, imgWidth);
         e3 = (elevators > 2) ? new ElevatorGUI(floors, 3, false, imgWidth) : new ElevatorGUI(floors, 3, true, imgWidth);
@@ -39,7 +39,6 @@ class ControlGUI extends Application {
         elevatorGUIS[1] = e2;
         elevatorGUIS[2] = e3;
         elevatorGUIS[3] = e4;
-
     }
 
     @Override
@@ -52,12 +51,11 @@ class ControlGUI extends Application {
         emergencyButton.setMaxWidth(imgWidth * maxElevators);
         emergencyButton.getStyleClass().add("fire_alarm");
         emergencyButton.setOnAction(e -> fireAlarm = true);
-
+        elevatorPanels = new HBox(e1.getElevatorVBox(), e2.getElevatorVBox(), e3.getElevatorVBox(), e4.getElevatorVBox());
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                elevatorPanels = new HBox(e1.getElevatorVBox(), e2.getElevatorVBox(), e3.getElevatorVBox(), e4.getElevatorVBox());
-                primaryStage.show();
+                e1.repaint();
             }
         };
 
@@ -74,17 +72,9 @@ class ControlGUI extends Application {
         primaryStage.show();
     }
 
-    synchronized void setSpecs(ElevatorSpecs specs)
+    ElevatorGUI getElevator()
     {
-        e1.setSpecs(specs);
-    }
-
-
-    //
-    void updateCurrentFloor(Integer floor) {
-        this.currentFloor = floor;
-        //Platform.runLater(() -> repaint());
-        System.out.println(currentFloor);
+        return e1;
     }
 
     Request getRequest() {

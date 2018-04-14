@@ -17,7 +17,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-class ElevatorGUI extends VBox {
+class ElevatorGUI {
 
     private int NUM_FLOORS;
 
@@ -36,8 +36,13 @@ class ElevatorGUI extends VBox {
     private LinkedList<Request> disabledButtons = new LinkedList<>();
     private LinkedList<Request> requestedFloors = new LinkedList<>();
 
-    private VBox elevatorVBox = new VBox();
-    private ElevatorSpecs specs = new ElevatorSpecs(false, null, 1, null);
+    private VBox elevatorVBox = null;
+    private ElevatorSpecs specs = new ElevatorSpecs(true, null, 1, Directions.UP);
+
+    private Pane topPane;
+    private GridPane floorButtons;
+    private GridPane lobbyButtons;
+
 
     ElevatorGUI(int floors, int elevatorNumber, boolean disabled, double imgWidth)
     {
@@ -50,21 +55,31 @@ class ElevatorGUI extends VBox {
 
     VBox getElevatorVBox()
     {
-        repaint();
+        createGUI();
         return elevatorVBox;
     }
 
-    private void repaint()
+    void repaint()
+    {
+        topPane = topPane();
+        floorButtons = floorButtonStatus();
+        lobbyButtons = lobbyButtonStatus();
+        elevatorVBox.getChildren().set(1, topPane);
+        elevatorVBox.getChildren().set(2, floorButtons);
+        elevatorVBox.getChildren().set(3, lobbyButtons);
+    }
+
+    void createGUI()
     {
         Label elevLabel = new Label("ELEVATOR " + elevatorNumber);
         if(isDisabled) elevLabel.setText("NO ELEVATOR");
         elevLabel.getStyleClass().add("elevator_label");
 
-        Pane top = topPane();
+        topPane = topPane();
         blockSize = imgWidth / NUM_FLOORS;
 
-        GridPane floorButtons = floorButtonStatus();
-        GridPane lobbyButtons = lobbyButtonStatus();
+        floorButtons = floorButtonStatus();
+        lobbyButtons = lobbyButtonStatus();
 
         Label doorStatusLabel = new Label("Door Status: ");
         doorStatusLabel.getStyleClass().add("title_label");
@@ -75,8 +90,7 @@ class ElevatorGUI extends VBox {
         controlPanel.getStyleClass().add("title_label");
 
         GridPane controls = makeControlBlock();
-
-        elevatorVBox = new VBox(elevLabel, top, floorButtons, lobbyButtons, doorStatusLabel, doorStatus, controlPanel, controls);
+        elevatorVBox = new VBox(elevLabel, topPane, floorButtons, lobbyButtons, doorStatusLabel, doorStatus, controlPanel, controls);
         elevatorVBox.setAlignment(Pos.CENTER);
         elevatorVBox.setSpacing(5);
     }
@@ -328,14 +342,11 @@ class ElevatorGUI extends VBox {
         currentFloor.setTranslateY(imageView.getFitHeight()*.3);
         currentFloor.toFront();
         Pane pane;
-        if(specs != null)
+        if(specs.isMoving())
         {
-            if(specs.isMoving()) {
-                if (specs.getDirection() == Directions.UP) moving.setText("Moving Up");
-                else moving.setText("Moving Down");
-                pane = new Pane(imageView, currentFloor, moving);
-            }
-            else pane = new Pane(imageView, currentFloor);
+            if (specs.getDirection() == Directions.UP) moving.setText("Moving Up");
+            else moving.setText("Moving Down");
+            pane = new Pane(imageView, currentFloor, moving);
         }
         else pane = new Pane(imageView, currentFloor);
         return pane;

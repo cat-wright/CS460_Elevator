@@ -5,6 +5,8 @@ import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 
 import Request.*;
+import javafx.stage.Stage;
+
 import java.util.LinkedList;
 
 public class ControlPanel extends Thread
@@ -13,7 +15,7 @@ public class ControlPanel extends Thread
     private ControlGUI controller;
     private int floors, elevators;
     private Integer currentFloor = 1;
-    private ElevatorSpecs specs;
+    private ElevatorSpecs specs = new ElevatorSpecs(false, null, 1, null);
     private LinkedList<Request> disabledButtons = new LinkedList<>();
     //private LinkedList<Request> currentRequests = new LinkedList<>(); //will be implemented in a later version
     private Request currentTakenRequest;
@@ -30,13 +32,14 @@ public class ControlPanel extends Thread
             try
             {
                 controller = new ControlGUI(this, floors, elevators);
-
+                controller.start(new Stage());
             }
             catch(Exception e)
             {
                 e.printStackTrace();
             }
         });
+
     }
 
     @Override
@@ -45,27 +48,8 @@ public class ControlPanel extends Thread
         while(!finished)
         {
             if(controller != null) {
-                //currentTakenRequest = controller.getRequest();
-                if(specs != null) controller.setSpecs(specs);
-//                if(currentTakenRequest != null) {
-//                    controller.setRequest(currentTakenRequest);
-//                    currentTakenRequest = null;
-//                }
+                controller.getElevator().setSpecs(specs);
                 disabledButtons = controller.getDisabledButtons();
-//                if(controller.getMaintenanceKey()) maintenanceKey = true;
-//                else maintenanceKey = false;
-//                if(controller.getFireAlarm()) {
-//                    System.out.println("FIRE ALARM ACTIVATED");
-//                    fireAlarm = true;
-//                    try {
-//                        sleep(3000);
-//                    }
-//                    catch(InterruptedException e)
-//                    {
-//                        e.printStackTrace();
-//                    }
-//                    controller.setFireAlarm(false);
-//                }
             }
         }
     }
@@ -116,7 +100,7 @@ public class ControlPanel extends Thread
      */
     public void buildElevatorSpecs(boolean isMoving, Request currentTakenRequest, Integer currentFloor, Directions direction)
     {
-        controller.setSpecs(new ElevatorSpecs(isMoving, currentTakenRequest, currentFloor, direction));
+        specs = new ElevatorSpecs(isMoving, currentTakenRequest, currentFloor, direction);
     }
 
     //used in testing currently
