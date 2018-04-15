@@ -3,8 +3,15 @@ import java.util.Random;
 
 import Request.*;
 
-public class CabinButton
+public class CabinRequestGenerator
 {
+    private int numberOfFloors;
+
+    CabinRequestGenerator(int numberOfFloors)
+    {
+        this.numberOfFloors = numberOfFloors;
+    }
+
     /**
      * Simulates a random button press in the cabin. There is a 5% chance
      * of successfully pressing a button. The rest of the time a null
@@ -14,7 +21,7 @@ public class CabinButton
      */
     public Request getRandomFloor()
     {
-        final int MAX = 10;
+        final int MAX = numberOfFloors;
         final int MIN = 1;
         final double PROBABILITY = 0.05; // 5% chance of pressing button
 
