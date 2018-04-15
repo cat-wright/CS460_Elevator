@@ -1,6 +1,6 @@
 package Cabin;
 
-import Request.Request;
+import Request.*;
 
 public class CabinRequests
 {
@@ -24,11 +24,11 @@ public class CabinRequests
 
         if (request != null && request.getDestination() > cabinLocation)
         {
-            request.setDirection(Request.Directions.UP);
+            request.setDirection(Directions.UP);
         }
         else if (request != null && request.getDestination() < cabinLocation)
         {
-            request.setDirection(Request.Directions.DOWN);
+            request.setDirection(Directions.DOWN);
         }
         else request = null;
 

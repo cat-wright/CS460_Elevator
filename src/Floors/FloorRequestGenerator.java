@@ -1,7 +1,6 @@
 package Floors;
 
-import Request.Directions;
-import Request.Request;
+import Request.*;
 
 import java.util.Random;
 
@@ -33,7 +32,7 @@ public class FloorRequestGenerator
 
         if (r.nextDouble() < PROBABILITY)
         {
-            Request request = new Request(randFloor, Request.Type.FLOOR);
+            Request request = new Request(randFloor, Type.FLOOR);
             Directions dir = getRandomDirection(randFloor);
 
             request.setDirection(dir); // set direction in Request object

@@ -1,7 +1,6 @@
 package Cabin;
 
-import Request.Directions;
-import Request.Request;
+import Request.*;
 
 import java.util.List;
 
