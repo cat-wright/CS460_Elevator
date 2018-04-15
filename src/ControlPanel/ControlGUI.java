@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 class ControlGUI extends Application {
@@ -20,8 +21,7 @@ class ControlGUI extends Application {
     private final int maxElevators = 4;
     private boolean fireAlarm = false;
     private double imgWidth;
-
-    private LinkedList<Request> disabledButtons = new LinkedList<>();
+    private Integer currentFloor;
     private LinkedList<Request> currentRequests = new LinkedList<>();
 
     private ElevatorGUI e1, e2, e3, e4;
@@ -30,7 +30,6 @@ class ControlGUI extends Application {
 
     ControlGUI(final ControlPanel controlPanel, int floors, int elevators) {
         imgWidth = Toolkit.getDefaultToolkit().getScreenSize().width / 5;
-        //e1 = new ElevatorGUI(floors, 1, false, imgWidth);
         e1 = (elevators > 0) ? new ElevatorGUI(floors, 1, false, imgWidth) : new ElevatorGUI(floors, 1, true, imgWidth);
         e2 = (elevators > 1) ? new ElevatorGUI(floors, 2, false, imgWidth) : new ElevatorGUI(floors, 2, true, imgWidth);
         e3 = (elevators > 2) ? new ElevatorGUI(floors, 3, false, imgWidth) : new ElevatorGUI(floors, 3, true, imgWidth);
@@ -77,6 +76,12 @@ class ControlGUI extends Application {
         return e1;
     }
 
+    void updateCurrentFloor(Integer floor) {
+        this.currentFloor = floor;
+        //Platform.runLater(() -> repaint());
+        System.out.println(currentFloor);
+    }
+
     Request getRequest() {
         if(e1.getFlag()) {
             e1.setFlag(false);
@@ -92,12 +97,9 @@ class ControlGUI extends Application {
         else return null;
     }
 
-    LinkedList<Request> getDisabledButtons() {
-        if(e1.getAbleFlag())
-        {
-            e1.setAbleFlag(false);
-        }
-        return disabledButtons;
+    boolean locked()
+    {
+        return e1.getLock();
     }
 
     boolean getMaintenanceKey() {

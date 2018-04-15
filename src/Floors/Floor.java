@@ -6,7 +6,7 @@ package Floors;
  * object represents. Also the two up and down arrival lights are stored
  * in this class.
  */
-class Floor
+public class Floor
 {
     // up and down buttons on each floor
     private boolean upButton, downButton;

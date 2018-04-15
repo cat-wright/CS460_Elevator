@@ -16,7 +16,6 @@ public class ControlPanel extends Thread
     private int floors, elevators;
     private Integer currentFloor = 1;
     private ElevatorSpecs specs = new ElevatorSpecs(false, null, 1, null);
-    private LinkedList<Request> disabledButtons = new LinkedList<>();
     //private LinkedList<Request> currentRequests = new LinkedList<>(); //will be implemented in a later version
     private Request currentTakenRequest;
 
@@ -49,7 +48,6 @@ public class ControlPanel extends Thread
         {
             if(controller != null) {
                 controller.getElevator().setSpecs(specs);
-                disabledButtons = controller.getDisabledButtons();
             }
         }
     }
@@ -69,16 +67,6 @@ public class ControlPanel extends Thread
      * @return true if maintenance key is in the elevator
      */
     boolean isMaintenanceKey() { return maintenanceKey; }
-
-    /**
-     * returns a list of all buttons that are currently disabled/not able to be pressed.  All are
-     * expressed as requests, with the type, destination, and direction signifying which button
-     * @return Linked List of Requests
-     */
-    public LinkedList<Request> getDisabledButtons()
-    {
-        return disabledButtons;
-    }
 
     /**
      * returns the current request from the interface to be added to the queue in BuildingControl

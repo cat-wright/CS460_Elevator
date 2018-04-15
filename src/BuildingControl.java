@@ -60,7 +60,9 @@ public class BuildingControl
 
         //cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
         cabin.moveCabin(currentRequest.getDestination());
-        while (isCabinMoving()) { }
+        while (isCabinMoving()) {
+            cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
+        }
         currentFloor = cabin.getCabinLocation();
         cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
 
@@ -81,7 +83,7 @@ public class BuildingControl
                         bP.sendToFloor();
                     }
                 });
-        swingTimer.setInitialDelay(5000 );
+        swingTimer.setInitialDelay(5000);
         swingTimer.start();
     }
   public static void main(final String[] args)
