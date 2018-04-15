@@ -2,20 +2,20 @@ package Floors;
 
 import Request.Directions;
 import Request.Request;
-import Request.Type;
 
 import java.util.List;
-import java.util.Random;
 
 public class FloorRequests
 {
     private int numberOfFloors;
     private BuildingFloors buildingFloors;
+    private FloorRequestGenerator requestGenerator;
 
     public FloorRequests(int numberOfFloors)
     {
         this.numberOfFloors = numberOfFloors;
         this.buildingFloors = new BuildingFloors(numberOfFloors);
+        this.requestGenerator = new FloorRequestGenerator(numberOfFloors);
     }
 
     /**
@@ -27,25 +27,17 @@ public class FloorRequests
      */
     public Request getFloorRequest()
     {
-        final int MAX = 10;
-        final int MIN = 1;
-        final double PROBABILITY = 0.05; // 5% chance of pressing button
+        Request request;
 
-        // get random number between 1 and 10
-        Random r = new Random();
-        Integer randFloor = r.nextInt(MAX - MIN + 1) + MIN;
-
-        if (r.nextDouble() < PROBABILITY)
+        if ((request = requestGenerator.getFloorRequest()) != null)
         {
-            Request request = new Request(randFloor, Type.FLOOR);
-            Directions dir = getRandomDirection(randFloor);
-
-            request.setDirection(dir); // set direction in Request object
+            int floor = request.getDestination();
+            Directions dir = request.getDirection();
 
             // Update the button press to true (turn light on)
-            setLobbyButton(randFloor, dir, true);
+            setLobbyButton(floor, dir, true);
 
-            return request;
+            return request; // button pressed
         }
 
         return null; // no button pressed
@@ -76,35 +68,13 @@ public class FloorRequests
     }
 
     /**
+     * The list of all floor objects is used by the GUI to update the state
+     * of all floor lights.
+     *
      * @return list of all floor objects
      */
     public List<Floor> getAllFloors()
     {
         return buildingFloors.getAllFloors();
-    }
-
-    /**
-     * Generates a random direction based on the floor that is sending the
-     * request.
-     *
-     * Note: This direction refers the the direction the person in the lobby
-     * wants to go.
-     *
-     * @param floor floor that the button is pressed on
-     * @return the direction of the lobby button pressed
-     */
-    private Directions getRandomDirection(int floor)
-    {
-        Random r = new Random();
-
-        // if first floor, you can only go up
-        if (floor == 1) return Directions.UP;
-
-        // if top floor, you can only go down
-        if (floor == numberOfFloors) return Directions.DOWN;
-
-        // if not top floor or bottom floor then randomly generate direction
-        if ((r.nextInt() % 2) == 0) return Directions.UP;
-        else return Directions.DOWN;
     }
 }
