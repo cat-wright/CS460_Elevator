@@ -4,12 +4,17 @@ public class Request
     private Directions direction;
     private Integer destination;
     private Type type;
+    private int elevator;
 
     public Request(Integer destination, Type type)
     {
         this.destination = destination;
         this.type = type;
     }
+
+    public void setElevator(int elevator) {this.elevator = elevator;}
+
+    public int getElevator() {return elevator;}
 
     public Integer getDestination()
     {

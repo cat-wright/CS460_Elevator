@@ -9,7 +9,7 @@ public class Door {
 
     public Door(DoorType doorType) {
         this.doorType = doorType;
-        this.doorState = DoorState.OPENED;
+        this.doorState = DoorState.CLOSED;
     }
 
     public void setDoorState(DoorState state){

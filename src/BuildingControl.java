@@ -1,5 +1,8 @@
 import ControlPanel.ControlPanel;
 import Cabin.Cabin;
+import Doors.DoorController;
+import Doors.DoorState;
+import Floors.FloorRequests;
 import Request.Request;
 import Request.StateController;
 
@@ -12,8 +15,14 @@ import java.awt.event.ActionListener;
 public class BuildingControl
 {
   final static ControlPanel cP = new ControlPanel(10,1);
-  Cabin cabin = new Cabin(1);
-  StateController sC = new StateController(cabin);
+  Cabin cabin ;
+  Cabin e1 = new Cabin(1, 1);
+  Cabin e2 = new Cabin(1, 2);
+  Cabin e3 = new Cabin(1, 3);
+  Cabin e4 = new Cabin(1, 4);
+  StateController sC = new StateController(e1, e2, e3, e4);
+  DoorController dC = new DoorController();
+  FloorRequests fR = new FloorRequests(10);
   private Request requestedFloor;
   private Integer currentFloor;
 
@@ -22,9 +31,9 @@ public class BuildingControl
       this.currentFloor = currentFloor;
   }
 
-  private boolean isCabinMoving()
+  private boolean isCabinMoving(Cabin e)
   {
-    if(cabin.isCabinMoving())
+    if(e.isCabinMoving())
     {
       return true;
     }
@@ -33,43 +42,59 @@ public class BuildingControl
 
   private void setCurrentFloor(Integer floor) { this.currentFloor = floor; }
   
-  private void checkRequests()
-  {
-    requestedFloor = cabin.cabinRequest();
-  
-    if(requestedFloor != null) //&& requestedFloor.getDestination() != currentFloor)
-    {
-      sC.addToQue(requestedFloor);
-    }
+  private void checkCabbinRequests(Cabin e) {
 
-    requestedFloor = cP.getRequest();
-    if(requestedFloor != null) //&& requestedFloor.getDestination() != currentFloor)
+      requestedFloor = e.cabinRequest();
+
+      if (requestedFloor != null) //&& requestedFloor.getDestination() != currentFloor)
       {
-          sC.addToQue(requestedFloor);
+          sC.addToQue(requestedFloor, e.getCabinNumer());
+      }
+
+      requestedFloor = cP.getRequest();
+      if (requestedFloor != null) //&& requestedFloor.getDestination() != currentFloor)
+      {
+          sC.addToQue(requestedFloor, sC.getElevator(requestedFloor));
+      }
+  }
+  void getFloorRequests()
+  {
+      requestedFloor = fR.getFloorRequest();
+      if(requestedFloor != null) //&& requestedFloor.getDestination() != currentFloor)
+      {
+          sC.addToQue(requestedFloor,sC.getElevator(requestedFloor));
       }
   }
   
-  private void sendToFloor()
+  private void sendToFloor(Cabin e)
   {
-      while (isCabinMoving()) { }
-    Request currentRequest = sC.getRequest();
+      while (isCabinMoving(e)) { }
+      if(dC.checkACabinDoor(e.getCabinNumer()) != DoorState.CLOSED){dC.closeDoorAtCabin(e.getCabinNumer(), true);}
+      if(dC.checkADoorES((e.getCabinLocation()-1), e.getCabinNumer()) != DoorState.CLOSED)
+      {
+          dC.closeDoorAtES((e.getCabinLocation()-1),e.getCabinNumer(), true);
+      }
+      while(dC.checkACabinDoor(e.getCabinNumer()) != DoorState.CLOSED && dC.checkADoorES((e.getCabinLocation()-1), e.getCabinNumer()) != DoorState.CLOSED)
+      {
+
+      }
+      Request currentRequest = sC.getRequest(e.getCabinNumer());
 
     if(currentRequest != null) {
 
-        //cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
 
-        //cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
-        cabin.moveCabin(currentRequest.getDestination());
-        while (isCabinMoving()) {
-            cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
+        e.moveCabin(currentRequest.getDestination());
+        while (isCabinMoving(e)) {
+            cP.buildElevatorSpecs(isCabinMoving(e), currentRequest, currentFloor, currentRequest.getDirection());
         }
-        currentFloor = cabin.getCabinLocation();
-        cP.buildElevatorSpecs(isCabinMoving(), currentRequest, currentFloor, currentRequest.getDirection());
+        currentFloor = e.getCabinLocation();
+        cP.buildElevatorSpecs(isCabinMoving(e), currentRequest, currentFloor, currentRequest.getDirection());
 
     }
-      //cP.setCurrentFloor(currentFloor);
-    
+
   }
+
+
 
     private static void testSwingTimer(){
         BuildingControl bP = new BuildingControl(1);
@@ -79,8 +104,8 @@ public class BuildingControl
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        bP.checkRequests();
-                        bP.sendToFloor();
+                        bP.checkCabbinRequests(bP.e1);
+                        bP.sendToFloor(bP.e1);
                     }
                 });
         swingTimer.setInitialDelay(5000);
@@ -88,17 +113,10 @@ public class BuildingControl
     }
   public static void main(final String[] args)
   {
-      BuildingControl bP = new BuildingControl(1);
+      //BuildingControl bP = new BuildingControl(1);
       cP.start();
       testSwingTimer();
 
-
-    /*while(true)
-    {
-      bP.checkRequests();
-      bP.sendToFloor();
-      
-    }*/
   }
 
 }

@@ -36,11 +36,15 @@ public class DoorController {
         }
     }
 
-    public DoorState checkADoorES1(int floorDoor){
+    public DoorState checkADoorES(int floorDoor, int es){
         if(floorDoor < 0 || floorDoor > 9){
             return null;
         }
-        return elevatorShaft1.get(floorDoor).getDoorState();
+        if(es == 1) {return elevatorShaft1.get(floorDoor).getDoorState();}
+        if(es == 2) {return elevatorShaft2.get(floorDoor).getDoorState();}
+        if(es == 3) {return elevatorShaft3.get(floorDoor).getDoorState();}
+        if(es == 4) {return elevatorShaft4.get(floorDoor).getDoorState();}
+        return null;
     }
 
     public DoorState checkADoorES2(int floorDoor){
@@ -91,8 +95,11 @@ public class DoorController {
         cabinDoors.get(floorDoor).setDoorOpen(shouldOpen);
     }
 
-    public void closeDoorAtES1(int floorDoor, boolean shouldClose){
-        elevatorShaft1.get(floorDoor).setDoorOpen(shouldClose);
+    public void closeDoorAtES(int floorDoor, int es, boolean shouldClose){
+        if(es == 1) {elevatorShaft1.get(floorDoor).setDoorOpen(shouldClose);}
+        if(es == 2) {elevatorShaft2.get(floorDoor).setDoorOpen(shouldClose);}
+        if(es == 3) {elevatorShaft3.get(floorDoor).setDoorOpen(shouldClose);}
+        if(es == 4) {elevatorShaft4.get(floorDoor).setDoorOpen(shouldClose);}
     }
 
     public void closeDoorAtES2(int floorDoor, boolean shouldClose){

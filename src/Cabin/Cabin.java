@@ -13,21 +13,26 @@ public class Cabin
     private Integer cabinLocation;
     private Directions direction;
     private boolean isMoving;
-
+    private int cabinNumber;
     private Motion motion;
     private CabinRequests cabinRequests;
     private CabinButtons buttons;
 
-    public Cabin(Integer cabinLocation)
+    public Cabin(Integer cabinLocation, int cabin)
     {
         this.cabinLocation = cabinLocation;
-
+        this.cabinNumber = cabin;
         motion = new Motion();
         cabinRequests = new CabinRequests(10);
         buttons = new CabinButtons(10);
 
         direction = Directions.UP;
         this.isMoving = false;
+    }
+
+    public int getCabinNumer ()
+    {
+        return cabinNumber;
     }
 
     /**
