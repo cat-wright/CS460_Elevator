@@ -1,5 +1,7 @@
 package ControlPanel;
 
+import Cabin.CabinButtons;
+import Doors.Door;
 import Request.*;
 import Floors.*;
 import javafx.geometry.HPos;
@@ -43,7 +45,9 @@ class ElevatorGUI {
     private GridPane cabinButtons;
     private GridPane floorButtons;
 
-    private List<Floor> floorList = new ArrayList<>();
+    private List<Floor> lobbyList = new ArrayList<>();
+    private List<CabinButtons> cabinList = new ArrayList<>();
+    private List<Door> doorList = new ArrayList<>();
 
     ElevatorGUI(int floors, int elevatorNumber, boolean disabled, double imgWidth)
     {
@@ -280,31 +284,6 @@ class ElevatorGUI {
         });
         gridPane.addRow(0, goToFloor, comboBox, typeComboBox, goToFloorButton);
 
-//        Label AbleDisableButtons = new Label("Able/Disable: ");
-//        ComboBox<Integer> floorNumberBox = makeFloorComboBox();
-//        ComboBox<String> buttonComboBox = new ComboBox<>();
-//        buttonComboBox.getItems().addAll(
-//                "Cabin",
-//                "Up",
-//                "Down"
-//        );
-//        Button ableDisableButton = new Button("Launch");
-//        if(isDisabled) ableDisableButton.setDisable(true);
-//        ableDisableButton.setOnAction(e -> {
-//            Type type;
-//            Integer floor = floorNumberBox.getValue();
-//            if((buttonComboBox.getValue()).equals("Cabin")) type = Type.CABIN;
-//            else type = Type.FLOOR;
-//            Request requestToAlter = new Request(floor, type);
-//
-//            if(buttonComboBox.getValue().equals("Up")) requestToAlter.setDirection(Directions.UP);
-//            else if(buttonComboBox.getValue().equals("Down")) requestToAlter.setDirection(Directions.DOWN);
-//            if(disabledButtons.contains(requestToAlter)) disabledButtons.remove(requestToAlter);
-//            else disabledButtons.add(requestToAlter);
-//            ableFlag = true;
-//        });
-//        gridPane.addRow(1, AbleDisableButtons, floorNumberBox, buttonComboBox, ableDisableButton);
-
         Label lockLabel = new Label("Lock Elevator: ");
         CheckBox lockBox = new CheckBox();
         if(isDisabled) lockBox.setDisable(true);
@@ -373,15 +352,26 @@ class ElevatorGUI {
 
     boolean getLock() { return isLocked; }
 
-    void updateCurrentFloor(Integer floor)
+    void setLock(boolean lock)
     {
-        this.currentFloor = floor;
-        System.out.println(currentFloor);
+        isLocked = lock;
     }
+
+    void setCabinButtons(ArrayList<CabinButtons> cabinList)
+    {
+        this.cabinList = cabinList;
+    }
+
+    void setLobbyButtons(ArrayList<Floor> lobbyList) { this.lobbyList = lobbyList; }
+
+    void setDoorArray(ArrayList<Door> doorList) { this.doorList = doorList; }
 
     LinkedList<Request> getRequestedFloors() { return requestedFloors; }
 
-    Request getCurrentRequest() { return currentRequest; }
+    Request getCurrentRequest()
+    {
+        return currentRequest;
+    }
 
     synchronized void setCurrentRequest(Request currentRequest)
     {
@@ -393,20 +383,14 @@ class ElevatorGUI {
         return maintenanceKey;
     }
 
-    void setFloorList(ArrayList<Floor> floorList)
-    {
-        this.floorList = floorList;
-    }
-
-    boolean getFlag()
-    {
-        return flag;
-    }
-
-    void setFlag(boolean flag) { this.flag = flag; }
-
-    boolean getAbleFlag() { return ableFlag; }
-
-    void setAbleFlag(boolean ableFlag) { this.ableFlag = ableFlag; }
-
+//    boolean getFlag()
+//    {
+//        return flag;
+//    }
+//
+//    void setFlag(boolean flag) { this.flag = flag; }
+//
+//    boolean getAbleFlag() { return ableFlag; }
+//
+//    void setAbleFlag(boolean ableFlag) { this.ableFlag = ableFlag; }
 }
