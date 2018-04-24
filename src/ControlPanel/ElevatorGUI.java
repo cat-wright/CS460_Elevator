@@ -1,7 +1,7 @@
 package ControlPanel;
 
-import Cabin.CabinButtons;
 import Doors.Door;
+import Doors.DoorState;
 import Request.*;
 import Floors.*;
 import javafx.geometry.HPos;
@@ -16,7 +16,6 @@ import javafx.scene.layout.*;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 class ElevatorGUI {
@@ -28,26 +27,26 @@ class ElevatorGUI {
     private double blockSize;
 
     private Request currentRequest;
-    private boolean flag = false;
-    private boolean ableFlag = false;
     private Integer currentFloor = 1; //Begins at bottom floor
 
     private boolean maintenanceKey = false;
     private boolean isDisabled;
     private boolean isLocked;
 
-    private LinkedList<Request> requestedFloors = new LinkedList<>();
-
     private VBox elevatorVBox = null;
-    private ElevatorSpecs specs = new ElevatorSpecs(false, null, 1, Directions.UP);
+    private ElevatorSpecs specs = new ElevatorSpecs( false, 1, Directions.UP);
 
     private Pane topPane;
     private GridPane cabinButtons;
     private GridPane floorButtons;
 
     private List<Floor> lobbyList = new ArrayList<>();
-    private List<CabinButtons> cabinList = new ArrayList<>();
+    private List<Boolean> cabinList = new ArrayList<>();
     private List<Door> doorList = new ArrayList<>();
+
+    private ImageView button = new ImageView(new Image(getClass().getResource("/Button_Grey.png").toString(), blockSize, blockSize, false, false));
+    private ImageView buttonOn = new ImageView(new Image(getClass().getResource("/Button_Yellow.png").toString(), blockSize, blockSize, false, false));
+    private ImageView buttonOff = new ImageView(new Image(getClass().getResource("/Button_Black.png").toString(), blockSize, blockSize, false, false));
 
     ElevatorGUI(int floors, int elevatorNumber, boolean disabled, double imgWidth)
     {
@@ -74,7 +73,7 @@ class ElevatorGUI {
         elevatorVBox.getChildren().set(3, floorButtons);
     }
 
-    void createGUI()
+    private void createGUI()
     {
         Label elevLabel = new Label("ELEVATOR " + elevatorNumber);
         if(isDisabled) elevLabel.setText("NO ELEVATOR");
@@ -105,57 +104,49 @@ class ElevatorGUI {
     private GridPane cabinButtonStatus()
     {
         GridPane gridPane = new GridPane();
-        Image button = new Image(getClass().getResource("/Button_Grey.png").toString(), blockSize, blockSize, false, false);
-        Image buttonOff = new Image(getClass().getResource("/Button_Black.png").toString(), blockSize, blockSize, false, false);
-        Image buttonOn = new Image(getClass().getResource("/Button_Yellow.png").toString(), blockSize, blockSize, false, false);
-
         StackPane floorButton;
 
         for(int i = 0; i < NUM_FLOORS; i++)
         {
             int floor = i+1;
             Label floorLabel = new Label(String.valueOf(floor));
-            ImageView imgButton = new ImageView(button);
             floorButton = new StackPane();
+            ImageView imgButton;
+            if(cabinList.get(i)) imgButton = buttonOn;
+            else imgButton = button;
             floorButton.getChildren().addAll(imgButton, floorLabel);
             gridPane.add(floorButton, i, 0);
         }
-
-        if(specs != null) this.currentRequest = specs.getCurrentRequest();
-        if(currentRequest != null) {
-            StackPane onFloorLight = changeLight(buttonOn, currentRequest);
-            if(onFloorLight != null) gridPane.add(onFloorLight, currentRequest.getDestination()-1, 0);
-        }
+//        this.currentRequest = specs.getCurrentRequest();
+//        if(currentRequest != null) {
+//            StackPane onFloorLight = changeLight(buttonOn, currentRequest);
+//            if(onFloorLight != null) gridPane.add(onFloorLight, currentRequest.getDestination()-1, 0);
+//        }
 
 //        for(Request req : disabledButtons)
 //        {
 //            StackPane offFloorLight = changeLight(buttonOff, req);
 //            if(offFloorLight != null) gridPane.add(offFloorLight, req.getDestination()-1, 0);
 //        }
-
         return gridPane;
     }
 
-    StackPane changeLight(Image buttonImage, Request request)
-    {
-        if(request.getType() == Type.CABIN)
-        {
-            Label floorLabel = new Label(String.valueOf(request.getDestination()));
-            ImageView imgButton = new ImageView(buttonImage);
-            return new StackPane(imgButton, floorLabel);
-        }
-        else return null;
-    }
+//    StackPane changeLight(Image buttonImage, Request request)
+//    {
+//        if(request.getType() == Type.CABIN)
+//        {
+//            Label floorLabel = new Label(String.valueOf(request.getDestination()));
+//            ImageView imgButton = new ImageView(buttonImage);
+//            return new StackPane(imgButton, floorLabel);
+//        }
+//        else return null;
+//    }
 
     private GridPane floorButtonStatus()
     {
         GridPane gridPane = new GridPane();
-        Image button = new Image(getClass().getResource("/Button_Grey.png").toString(), blockSize, blockSize, false, false);
-        Image buttonOff = new Image(getClass().getResource("/Button_Black.png").toString(),blockSize, blockSize, false, false);
-        Image buttonOn = new Image(getClass().getResource("/Button_Yellow.png").toString(),blockSize, blockSize, false, false);
-
-        Image upArrow = new Image(getClass().getResource("/up_arrow.png").toString(), blockSize, blockSize, false, false);
-        Image downArrow = new Image(getClass().getResource("/down_arrow.png").toString(), blockSize, blockSize, false, false);
+        ImageView upArrow = new ImageView(new Image(getClass().getResource("/up_arrow.png").toString(), blockSize, blockSize, false, false));
+        ImageView downArrow = new ImageView(new Image(getClass().getResource("/down_arrow.png").toString(), blockSize, blockSize, false, false));
 
         int rows = 0;
         while(rows < 2)
@@ -165,23 +156,18 @@ class ElevatorGUI {
 
             for(int i = 0; i < NUM_FLOORS; i++)
             {
-                if(rows == 0) direction = new ImageView(upArrow);
+                if(rows == 0) direction = upArrow;
                 else
                 {
-                    direction = new ImageView(downArrow);
+                    direction = downArrow;
                 }
-                ImageView imgButton = new ImageView(button);
-                if(specs != null) this.currentRequest = specs.getCurrentRequest();
-                if(currentRequest != null)
+                ImageView imgButton = button;
+                if(isLocked) imgButton = buttonOff;
+                else
                 {
-                    if(currentRequest.getType() == Type.FLOOR)
-                    {
-                        if(currentRequest.getDestination() == i+1)
-                        {
-                            if(currentRequest.getDirection() == Directions.UP && rows == 0) imgButton.setImage(buttonOn);
-                            else if(currentRequest.getDirection() == Directions.DOWN && rows == 1) imgButton.setImage(buttonOn);
-                        }
-                    }
+                    if(rows == 0) if(lobbyList.get(i).isUpButton()) imgButton = buttonOn;
+                    else if(lobbyList.get(i).isDownButton()) imgButton = buttonOn;
+                    else imgButton = button;
                 }
                 lobbyButton = new StackPane();
                 lobbyButton.getChildren().addAll(imgButton, direction);
@@ -189,28 +175,6 @@ class ElevatorGUI {
             }
             rows++;
         }
-
-//        for(Request req : disabledButtons)
-//        {
-//
-//            if(req.getType() == Type.FLOOR)
-//            {
-//                int row;
-//                ImageView direction = new ImageView(downArrow);
-//                if(req.getDirection() == Directions.UP) {
-//                    row = 0;
-//                    direction.setImage(upArrow);
-//                }
-//                else row = 1;
-//
-//                int floor = req.getDestination();
-//                ImageView imgButton = new ImageView(buttonOff);
-//                StackPane lobbyButton = new StackPane(imgButton);
-//                gridPane.add(lobbyButton, floor-1 ,row);
-//            }
-//        }
-
-
         return gridPane;
     }
 
@@ -218,9 +182,9 @@ class ElevatorGUI {
     {
         VBox doors;
         GridPane legend = new GridPane();
-        Image openDoor = new Image(getClass().getResource("/Door_Open.png").toString(), blockSize, blockSize, false, false);
-        Image movingDoor = new Image(getClass().getResource("/Door_Moving.png").toString(), blockSize, blockSize, false, false);
-        Image closedDoor = new Image(getClass().getResource("/Door_Closed.png").toString(), blockSize, blockSize, false, false);
+        ImageView openDoor = new ImageView(new Image(getClass().getResource("/Door_Open.png").toString(), blockSize, blockSize, false, false));
+        ImageView movingDoor = new ImageView(new Image(getClass().getResource("/Door_Moving.png").toString(), blockSize, blockSize, false, false));
+        ImageView closedDoor = new ImageView(new Image(getClass().getResource("/Door_Closed.png").toString(), blockSize, blockSize, false, false));
 
         Label openLabel = new Label(":OPEN");
         openLabel.getStyleClass().add("door_label");
@@ -229,7 +193,7 @@ class ElevatorGUI {
         Label closedLabel = new Label(":CLOSED");
         closedLabel.getStyleClass().add("door_label");
 
-        legend.addRow(0, new ImageView(openDoor), openLabel, new ImageView(movingDoor), movingLabel, new ImageView(closedDoor), closedLabel);
+        legend.addRow(0, openDoor, openLabel, movingDoor, movingLabel, closedDoor, closedLabel);
         legend.setMaxWidth(imgWidth);
         legend.setHgap(10);
 
@@ -239,15 +203,16 @@ class ElevatorGUI {
             Label floorLabel = new Label(String.valueOf(i+1));
             floorGrid.setHalignment(floorLabel, HPos.CENTER);
             floorGrid.add(floorLabel, i, 0);
-            floorGrid.add(new ImageView(closedDoor), i, 1);
+            if(doorList.get(i).getDoorState() == DoorState.CLOSED) floorGrid.add(closedDoor, i, 1);
+            else if(doorList.get(i).getDoorState() == DoorState.OPENED) floorGrid.add(openDoor, i, 1);
+            else floorGrid.add(movingDoor, i, 1);
         }
-
         floorGrid.setMaxWidth(imgWidth);
 
         Label cabinLabel = new Label("CABIN DOOR: ");
         cabinLabel.setTranslateX(imgWidth/4);
         cabinLabel.setContentDisplay(ContentDisplay.RIGHT);
-        cabinLabel.setGraphic(new ImageView(closedDoor));
+        cabinLabel.setGraphic(closedDoor);
 
 
         doors = new VBox(legend, floorGrid, cabinLabel);
@@ -276,10 +241,7 @@ class ElevatorGUI {
             Type type;
             if(typeComboBox.getValue().equals("Cabin")) type = Type.CABIN;
             else type = Type.FLOOR;
-            Request newRequest = new Request(comboBox.getValue(), type);
-            currentRequest = newRequest;
-            flag = true;
-            requestedFloors.add(newRequest);
+            currentRequest = new Request(comboBox.getValue(), type);
             System.out.println("New Request to send Elevator to Floor " + comboBox.getValue());
         });
         gridPane.addRow(0, goToFloor, comboBox, typeComboBox, goToFloorButton);
@@ -287,18 +249,13 @@ class ElevatorGUI {
         Label lockLabel = new Label("Lock Elevator: ");
         CheckBox lockBox = new CheckBox();
         if(isDisabled) lockBox.setDisable(true);
-        lockBox.setOnAction(e -> {
-            if(lockBox.isSelected()) isLocked = true;
-        });
+        lockBox.setOnAction(e -> isLocked = lockBox.isSelected());
         gridPane.addRow(1, lockLabel, lockBox);
 
         Label maintenanceKeyLabel = new Label("Maintenance Key: ");
         CheckBox maintenanceBool = new CheckBox();
         if(isDisabled) maintenanceBool.setDisable(true);
-        maintenanceBool.setOnAction(e -> {
-            if(maintenanceBool.isSelected()) maintenanceKey = true;
-            else maintenanceKey = false;
-        });
+        maintenanceBool.setOnAction(e -> maintenanceKey = maintenanceBool.isSelected());
 
         gridPane.addRow(2, maintenanceKeyLabel, maintenanceBool);
 
@@ -357,7 +314,7 @@ class ElevatorGUI {
         isLocked = lock;
     }
 
-    void setCabinButtons(ArrayList<CabinButtons> cabinList)
+    void setCabinButtons(ArrayList<Boolean> cabinList)
     {
         this.cabinList = cabinList;
     }
@@ -366,31 +323,13 @@ class ElevatorGUI {
 
     void setDoorArray(ArrayList<Door> doorList) { this.doorList = doorList; }
 
-    LinkedList<Request> getRequestedFloors() { return requestedFloors; }
-
     Request getCurrentRequest()
     {
         return currentRequest;
-    }
-
-    synchronized void setCurrentRequest(Request currentRequest)
-    {
-        this.currentRequest = currentRequest;
     }
 
     boolean getMaintenanceKey()
     {
         return maintenanceKey;
     }
-
-//    boolean getFlag()
-//    {
-//        return flag;
-//    }
-//
-//    void setFlag(boolean flag) { this.flag = flag; }
-//
-//    boolean getAbleFlag() { return ableFlag; }
-//
-//    void setAbleFlag(boolean ableFlag) { this.ableFlag = ableFlag; }
 }

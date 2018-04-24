@@ -19,7 +19,7 @@ public class ControlPanel extends Thread
     private volatile boolean finished = false;
     private ControlGUI controller;
     private int floors, elevators;
-    private ElevatorSpecs specs = new ElevatorSpecs(false,null,  1, null);
+    private ElevatorSpecs specs = new ElevatorSpecs(false,  1, null);
 
     private boolean fireAlarm = false;
     private Boolean[] lockedElevators = {false, false, false, false};
@@ -59,7 +59,7 @@ public class ControlPanel extends Thread
         }
     }
 
-    public void setCabinList(ArrayList<CabinButtons> cabinList, int elevatorNumber)
+    public void setCabinList(ArrayList<Boolean> cabinList, int elevatorNumber)
     {
         if(controller != null)
         {
@@ -123,10 +123,7 @@ public class ControlPanel extends Thread
      */
     public Boolean[] getMaintenanceKeys()
     {
-        if(controller != null)
-        {
-            controller.updateMaintenanceKeys();
-        }
+        if(controller != null) controller.updateMaintenanceKeys();
         return maintenanceKeys;
     }
 
@@ -149,7 +146,7 @@ public class ControlPanel extends Thread
      */
     public void buildElevatorSpecs(boolean isMoving, Integer currentFloor, Directions direction)
     {
-        specs = new ElevatorSpecs(isMoving, null, currentFloor, direction);
+        specs = new ElevatorSpecs(isMoving, currentFloor, direction);
     }
 
     void shutdown()

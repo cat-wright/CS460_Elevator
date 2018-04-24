@@ -24,8 +24,6 @@ class ControlGUI extends Application {
     private final int maxElevators = 4;
     private boolean fireAlarm = false;
     private double imgWidth;
-    private Integer currentFloor;
-    private LinkedList<Request> currentRequests = new LinkedList<>();
 
     private ElevatorGUI e1, e2, e3, e4;
     private ElevatorGUI[] elevatorGUIS = new ElevatorGUI[maxElevators];
@@ -87,7 +85,7 @@ class ControlGUI extends Application {
 //        else return null;
     }
 
-    void setCabinList(ArrayList<CabinButtons> cabinList, int elevatorNumber)
+    void setCabinList(ArrayList<Boolean> cabinList, int elevatorNumber)
     {
         elevatorGUIS[elevatorNumber-1].setCabinButtons(cabinList);
     }

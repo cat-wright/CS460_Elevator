@@ -3,23 +3,27 @@ package Cabin;
 public class Motor extends Thread{
 
     private Integer currentFloor;
-    private int requestFloor;
     private boolean atFloor = false;
     private double elevatorPosition;
+    private int floorToMoveTo;
+    private boolean canRun = true;
+    private boolean torf = false;
     MotorPhysics motorPhysics = new MotorPhysics();
 
-    public Motor(int floorDestination, Integer startingFloor) {
+    public Motor(Integer startingFloor) {
         currentFloor = startingFloor;
         elevatorPosition = (double)startingFloor;
-        requestFloor = floorDestination;
     }
 
-    @Override
-    public void run() {
+    public void setMove(int floorToMoveTo) {
+        torf = true;
+        this.floorToMoveTo = floorToMoveTo;
+    }
 
+    public void move() {
         atFloor = false;
-        if (requestFloor < currentFloor) {
-            for (Integer i = currentFloor; i >= requestFloor; i--) {
+        if (floorToMoveTo < currentFloor) {
+            for (Integer i = currentFloor; i >= floorToMoveTo; i--) {
                 while (true) { //need to add functionality for checking if motor should move
 
                     elevatorPosition -= motorPhysics.move();
@@ -28,7 +32,7 @@ public class Motor extends Thread{
                     if (i >= (elevatorPosition + .01))
                         break;
                 }
-                if (i == requestFloor) {
+                if (i == floorToMoveTo) {
                     System.out.println("Aligning");
                     CabinAlignment ca = new CabinAlignment(false, i, elevatorPosition);
                     ca.align();
@@ -37,7 +41,7 @@ public class Motor extends Thread{
                 System.out.println("Current Floor: " + i);
             }
         } else {
-            for (Integer i = currentFloor; i <= requestFloor; i++) {
+            for (Integer i = currentFloor; i <= floorToMoveTo; i++) {
                 while (true) {
 
                     elevatorPosition += motorPhysics.move();
@@ -46,7 +50,7 @@ public class Motor extends Thread{
                     if (i <= (elevatorPosition + .01))
                         break;
                 }
-                if (i == requestFloor) {
+                if (i == floorToMoveTo) {
                     System.out.println("Aligning");
                     CabinAlignment ca = new CabinAlignment(true, i, elevatorPosition);
                     ca.align();
@@ -56,6 +60,18 @@ public class Motor extends Thread{
             }
         }
         atFloor = true;
+        torf = false;
+    }
+
+    @Override
+    public void run() {
+        while (canRun) {
+            if (torf) {
+                move();
+            } else {
+                sleep(1);
+            }
+        }
     }
 
     public boolean getAtFloor() {
@@ -65,6 +81,10 @@ public class Motor extends Thread{
 
     public Integer getCurrentFloor() {
         return currentFloor;
+    }
+
+    public void setCanRun(boolean g) {
+        canRun = g;
     }
 
     private void sleep(int sec) {
