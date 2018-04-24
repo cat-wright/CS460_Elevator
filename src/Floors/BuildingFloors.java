@@ -8,7 +8,7 @@ import java.util.List;
 public class BuildingFloors
 {
     private int numberOfFloors; // number of floors in the building
-    private List<Floor> floors; // list of all floor objects
+    private ArrayList<Floor> floors; // list of all floor objects
 
     /**
      * Basic constructor to set the number of floors in the building
@@ -55,7 +55,7 @@ public class BuildingFloors
     /**
      * @return list of all floor objects
      */
-    List<Floor> getAllFloors()
+    ArrayList<Floor> getAllFloors()
     {
         return floors;
     }

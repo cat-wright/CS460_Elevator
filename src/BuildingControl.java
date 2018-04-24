@@ -28,6 +28,9 @@ public class BuildingControl
 
   BuildingControl(Integer currentFloor)
   {
+      setCabinButtons();
+      setLobbies();
+      setDoors();
       this.currentFloor = currentFloor;
   }
 
@@ -51,13 +54,13 @@ public class BuildingControl
           sC.addToQue(requestedFloor, e.getCabinNumer());
       }
 
-      requestedFloor = cP.getRequest();
+      requestedFloor = cP.getRequest(e.getCabinNumer());
       if (requestedFloor != null) //&& requestedFloor.getDestination() != currentFloor)
       {
           sC.addToQue(requestedFloor, sC.getElevator(requestedFloor));
       }
   }
-  void getFloorRequests()
+  private void checkFloorRequests()
   {
       requestedFloor = fR.getFloorRequest();
       if(requestedFloor != null) //&& requestedFloor.getDestination() != currentFloor)
@@ -85,16 +88,32 @@ public class BuildingControl
 
         e.moveCabin(currentRequest.getDestination());
         while (isCabinMoving(e)) {
-            cP.buildElevatorSpecs(isCabinMoving(e), currentRequest, currentFloor, currentRequest.getDirection());
+            cP.buildElevatorSpecs(isCabinMoving(e), e.getCabinLocation(), currentRequest.getDirection());
         }
         currentFloor = e.getCabinLocation();
-        cP.buildElevatorSpecs(isCabinMoving(e), currentRequest, currentFloor, currentRequest.getDirection());
+        cP.buildElevatorSpecs(isCabinMoving(e), e.getCabinLocation(), currentRequest.getDirection());
 
     }
 
   }
 
+  void setCabinButtons()
+  {
+      cP.setCabinList(e1.getAllButtons(),1);
+      cP.setCabinList(e2.getAllButtons(),2);
+      cP.setCabinList(e3.getAllButtons(),3);
+      cP.setCabinList(e4.getAllButtons(),4);
+  }
 
+  void setDoors()
+  {
+      //cP.setDoorList();
+  }
+
+  void setLobbies()
+  {
+      cP.setLobbyList(fR.getAllFloors());
+  }
 
     private static void testSwingTimer(){
         BuildingControl bP = new BuildingControl(1);
@@ -104,8 +123,15 @@ public class BuildingControl
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        bP.checkFloorRequests();
                         bP.checkCabbinRequests(bP.e1);
                         bP.sendToFloor(bP.e1);
+                        bP.checkCabbinRequests(bP.e2);
+                        bP.sendToFloor(bP.e2);
+                        bP.checkCabbinRequests(bP.e3);
+                        bP.sendToFloor(bP.e3);
+                        bP.checkCabbinRequests(bP.e4);
+                        bP.sendToFloor(bP.e4);
                     }
                 });
         swingTimer.setInitialDelay(5000);

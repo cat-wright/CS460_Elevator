@@ -6,7 +6,7 @@ import java.util.List;
 public class CabinButtons
 {
     private int numberOfFloors;
-    private List<Boolean> buttons;
+    private ArrayList<Boolean> buttons;
 
     CabinButtons(int numberOfFloors)
     {
@@ -28,7 +28,7 @@ public class CabinButtons
     /**
      * @return list off all buttons
      */
-    public List<Boolean> getAllButtons()
+    public ArrayList<Boolean> getAllButtons()
     {
         return buttons;
     }

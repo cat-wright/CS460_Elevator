@@ -2,6 +2,7 @@ package Floors;
 
 import Request.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FloorRequests
@@ -72,7 +73,7 @@ public class FloorRequests
      *
      * @return list of all floor objects
      */
-    public List<Floor> getAllFloors()
+    public ArrayList<Floor> getAllFloors()
     {
         return buildingFloors.getAllFloors();
     }

@@ -2,6 +2,7 @@ package Cabin;
 
 import Request.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -104,7 +105,7 @@ public class Cabin
      *
      * @return list off all buttons
      */
-    public List<Boolean> getAllButtons() { return buttons.getAllButtons(); }
+    public ArrayList<Boolean> getAllButtons() { return buttons.getAllButtons(); }
 
     public Integer getCabinLocation()
     {
