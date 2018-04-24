@@ -59,7 +59,7 @@ public class Door {
     public boolean shouldDoorClosed(Door door){
         if(door.doorState.equals(DoorState.OPENED))
         {
-            System.out.println("Doors can be closed");
+            //System.out.println("Doors can be closed");
             return true;
         }
         return false;
@@ -67,7 +67,7 @@ public class Door {
 
     public boolean shouldDoorOpen(Door door){
         if(door.doorState.equals(DoorState.CLOSED)){
-            System.out.println("Doors can be opened");
+            //System.out.println("Doors can be opened");
             return true;
         }
         return false;
