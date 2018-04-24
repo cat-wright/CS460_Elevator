@@ -28,9 +28,9 @@ public class BuildingControl
 
   BuildingControl(Integer currentFloor)
   {
-      setCabinButtons();
-      setLobbies();
-      setDoors();
+      //setCabinButtons();
+      //setLobbies();
+      //setDoors();
       this.currentFloor = currentFloor;
 
   }
@@ -92,6 +92,9 @@ public class BuildingControl
             cP.buildElevatorSpecs(isCabinMoving(e), e.getCabinLocation(), currentRequest.getDirection());
         }
         currentFloor = e.getCabinLocation();
+        while(!e.isAtFloor()){}
+        dC.closeDoorAtES(e.getCabinLocation(),e.getCabinNumer(),true);
+        dC.openDoorAtCabin(e.getCabinLocation(), true);
         cP.buildElevatorSpecs(isCabinMoving(e), e.getCabinLocation(), currentRequest.getDirection());
 
     }
@@ -121,7 +124,10 @@ public class BuildingControl
 
     private static void testSwingTimer(){
         BuildingControl bP = new BuildingControl(1);
-
+        bP.setCabinButtons();
+        bP.setDoors();
+        bP.setLobbies();
+        //cP.start();
         javax.swing.Timer swingTimer = new javax.swing.Timer(
                 10,
                 new ActionListener(){

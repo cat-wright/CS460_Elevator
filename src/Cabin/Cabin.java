@@ -142,4 +142,10 @@ public class Cabin
     {
         System.out.println("Status of Cabin = " + isMoving);
     }
+
+    public boolean isAtFloor ()
+    {
+        if(motion.isAtFloor()) {return true;}
+        return false;
+    }
 }

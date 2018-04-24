@@ -90,8 +90,11 @@ public class DoorController {
         return cabinDoors.get(cabinDoor).getDoorState();
     }
 
-    public void openDoorAtES1(int floorDoor, boolean shouldOpen){
-        elevatorShaft1.get(floorDoor).setDoorOpen(shouldOpen);
+    public void openDoorAtES(int floorDoor, int es, boolean shouldOpen){
+        if(es == 1) {elevatorShaft1.get(floorDoor).setDoorOpen(shouldOpen);}
+        if(es == 2) {elevatorShaft2.get(floorDoor).setDoorOpen(shouldOpen);}
+        if(es == 3) {elevatorShaft3.get(floorDoor).setDoorOpen(shouldOpen);}
+        if(es == 4) {elevatorShaft4.get(floorDoor).setDoorOpen(shouldOpen);}
     }
 
     public void openDoorAtES2(int floorDoor, boolean shouldOpen){
