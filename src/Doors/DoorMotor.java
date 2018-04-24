@@ -36,6 +36,8 @@ public class DoorMotor extends Thread {
         return door.getDoorState();
     }
 
+    public Door getDoor() {return this.door;}
+
     public void setDoorOpen(boolean canDoorOpen){
         this.canDoorOpen = canDoorOpen;
     }

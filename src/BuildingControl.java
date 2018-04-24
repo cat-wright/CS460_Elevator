@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
  */
 public class BuildingControl
 {
-  final static ControlPanel cP = new ControlPanel(10,1);
+  static ControlPanel cP = new ControlPanel(10,4);
   Cabin cabin ;
   Cabin e1 = new Cabin(1, 1);
   Cabin e2 = new Cabin(1, 2);
@@ -32,6 +32,7 @@ public class BuildingControl
       setLobbies();
       setDoors();
       this.currentFloor = currentFloor;
+
   }
 
   private boolean isCabinMoving(Cabin e)
@@ -107,7 +108,10 @@ public class BuildingControl
 
   void setDoors()
   {
-      //cP.setDoorList();
+      cP.setDoorList(dC.getDoorList(1),1);
+      cP.setDoorList(dC.getDoorList(2),2);
+      cP.setDoorList(dC.getDoorList(3),3);
+      cP.setDoorList(dC.getDoorList(4),4);
   }
 
   void setLobbies()
@@ -117,6 +121,7 @@ public class BuildingControl
 
     private static void testSwingTimer(){
         BuildingControl bP = new BuildingControl(1);
+
         javax.swing.Timer swingTimer = new javax.swing.Timer(
                 10,
                 new ActionListener(){

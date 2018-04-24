@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DoorController {
-    private List<DoorMotor> elevatorShaft1 = new ArrayList<>();
-    private List<DoorMotor> elevatorShaft2 = new ArrayList<>();
-    private List<DoorMotor> elevatorShaft3 = new ArrayList<>();
-    private List<DoorMotor> elevatorShaft4 = new ArrayList<>();
-    private List<DoorMotor> cabinDoors = new ArrayList<>();
+    private ArrayList<DoorMotor> elevatorShaft1 = new ArrayList<>();
+    private ArrayList<DoorMotor> elevatorShaft2 = new ArrayList<>();
+    private ArrayList<DoorMotor> elevatorShaft3 = new ArrayList<>();
+    private ArrayList<DoorMotor> elevatorShaft4 = new ArrayList<>();
+    private ArrayList<DoorMotor> cabinDoors = new ArrayList<>();
+
+    private ArrayList<Door> doorList1 = new ArrayList<>();
+    private ArrayList<Door> doorList2 = new ArrayList<>();
+    private ArrayList<Door> doorList3 = new ArrayList<>();
+    private ArrayList<Door> doorList4 = new ArrayList<>();
 
     public DoorController (){
         genDoors(10, DoorType.FLOOR, elevatorShaft1);
@@ -21,7 +26,10 @@ public class DoorController {
         startDoors(elevatorShaft3);
         startDoors(elevatorShaft4);
         startDoors(cabinDoors);
-
+        setDoorList(elevatorShaft1, doorList1);
+        setDoorList(elevatorShaft2, doorList2);
+        setDoorList(elevatorShaft3, doorList3);
+        setDoorList(elevatorShaft4, doorList4);
     }
 
     public void startDoors(List<DoorMotor> doorMotors){
@@ -36,6 +44,13 @@ public class DoorController {
         }
     }
 
+    private void setDoorList(ArrayList<DoorMotor> elevatorShaft, ArrayList<Door> doorList)
+    {
+        for(int i = 0; i< 10; i++)
+        {
+            doorList.add(elevatorShaft.get(i).getDoor());
+        }
+    }
     public DoorState checkADoorES(int floorDoor, int es){
         if(floorDoor < 0 || floorDoor > 9){
             return null;
@@ -116,5 +131,14 @@ public class DoorController {
 
     public void closeDoorAtCabin(int floorDoor, boolean shouldClose){
         cabinDoors.get(floorDoor).setDoorOpen(shouldClose);
+    }
+
+    public ArrayList<Door> getDoorList(int elevator)
+    {
+        if(elevator ==1) return doorList1;
+        if(elevator ==2) return doorList1;
+        if(elevator ==3) return doorList1;
+        if(elevator ==4) return doorList1;
+        return null;
     }
 }

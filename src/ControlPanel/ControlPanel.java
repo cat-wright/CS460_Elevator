@@ -52,7 +52,8 @@ public class ControlPanel extends Thread
             if(controller != null) {
                 for(int i = 0; i < elevators; i++)
                 {
-                    controller.getElevator(i).setSpecs(specs);
+                    //edited here-Dominic
+                    controller.getElevator(i+1).setSpecs(specs);
                 }
                 fireAlarm = controller.getFireAlarm();
             }
