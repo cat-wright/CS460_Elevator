@@ -24,6 +24,8 @@ public class MotionTest {
             if (m.getCabinLocation() == 2) break;
         }
         System.out.println(m.isAtFloor());
+        sleep(5);
+        System.out.println(m.isAtFloor());
     }
 
     private static void sleep(double sec) {
