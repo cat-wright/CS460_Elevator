@@ -28,9 +28,9 @@ public class BuildingControl
 
   BuildingControl(Integer currentFloor)
   {
-      //setCabinButtons();
-      //setLobbies();
-      //setDoors();
+//      setCabinButtons();
+//      setLobbies();
+//      setDoors();
       this.currentFloor = currentFloor;
 
   }
@@ -127,7 +127,7 @@ public class BuildingControl
         bP.setCabinButtons();
         bP.setDoors();
         bP.setLobbies();
-        //cP.start();
+        cP.start();
         javax.swing.Timer swingTimer = new javax.swing.Timer(
                 10,
                 new ActionListener(){
@@ -151,7 +151,7 @@ public class BuildingControl
   public static void main(final String[] args)
   {
       //BuildingControl bP = new BuildingControl(1);
-      cP.start();
+      //cP.start();
       testSwingTimer();
 
   }

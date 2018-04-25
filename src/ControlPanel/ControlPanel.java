@@ -41,7 +41,6 @@ public class ControlPanel extends Thread
                 e.printStackTrace();
             }
         });
-
     }
 
     @Override

@@ -138,10 +138,11 @@ public class DoorController {
 
     public ArrayList<Door> getDoorList(int elevator)
     {
+        //edited doorList numbers - cat
         if(elevator ==1) return doorList1;
-        if(elevator ==2) return doorList1;
-        if(elevator ==3) return doorList1;
-        if(elevator ==4) return doorList1;
+        if(elevator ==2) return doorList2;
+        if(elevator ==3) return doorList3;
+        if(elevator ==4) return doorList4;
         return null;
     }
 }

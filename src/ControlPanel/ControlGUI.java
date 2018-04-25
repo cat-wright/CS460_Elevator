@@ -54,7 +54,10 @@ class ControlGUI extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                e1.repaint();
+                for(ElevatorGUI eGUI : elevatorGUIS)
+                {
+                    eGUI.repaint();
+                }
             }
         };
 
