@@ -49,7 +49,11 @@ class ControlGUI extends Application {
         Button emergencyButton = new Button("FIRE ALARM");
         emergencyButton.setMaxWidth(imgWidth * maxElevators);
         emergencyButton.getStyleClass().add("fire_alarm");
-        emergencyButton.setOnAction(e -> fireAlarm = true);
+        emergencyButton.setOnAction(e ->
+        {
+            fireAlarm = true;
+            setAllLocks(true);
+        });
         HBox elevatorPanels = new HBox(e1.getElevatorVBox(), e2.getElevatorVBox(), e3.getElevatorVBox(), e4.getElevatorVBox());
 
         startAnimation();
@@ -166,6 +170,4 @@ class ControlGUI extends Application {
     }
 
     boolean getFireAlarm() { return fireAlarm; }
-
-    void setFireAlarm(boolean fireAlarm) { this.fireAlarm = fireAlarm; }
 }

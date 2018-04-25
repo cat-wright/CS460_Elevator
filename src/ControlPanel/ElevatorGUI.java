@@ -41,6 +41,7 @@ class ElevatorGUI {
     private Pane topPane;
     private GridPane cabinButtons;
     private GridPane floorButtons;
+    private VBox doorStatus;
 
     private List<Floor> lobbyList;
     private List<Boolean> cabinList;
@@ -67,9 +68,12 @@ class ElevatorGUI {
         topPane = topPane();
         cabinButtons = cabinButtonStatus();
         floorButtons = floorButtonStatus();
+        doorStatus = getDoorStatus();
+
         elevatorVBox.getChildren().set(1, topPane);
         elevatorVBox.getChildren().set(2, cabinButtons);
         elevatorVBox.getChildren().set(3, floorButtons);
+        elevatorVBox.getChildren().set(5, doorStatus);
     }
 
     private void createGUI()
@@ -87,7 +91,7 @@ class ElevatorGUI {
         Label doorStatusLabel = new Label("Door Status: ");
         doorStatusLabel.getStyleClass().add("title_label");
 
-        VBox doorStatus = getDoorStatus();
+        doorStatus = getDoorStatus();
 
         Label controlPanel = new Label("Control Panel: ");
         controlPanel.getStyleClass().add("title_label");
@@ -233,7 +237,14 @@ class ElevatorGUI {
         Label cabinLabel = new Label("CABIN DOOR: ");
         cabinLabel.setTranslateX(imgWidth/4);
         cabinLabel.setContentDisplay(ContentDisplay.RIGHT);
-        cabinLabel.setGraphic(new ImageView(closedDoor));
+        if(cabinDoorList != null)
+        {
+            DoorState state = cabinDoorList.get(elevatorNumber-1).getDoorState();
+            if(state == DoorState.OPENED) cabinLabel.setGraphic(new ImageView(openDoor));
+            else if(state == DoorState.CLOSED) cabinLabel.setGraphic(new ImageView(closedDoor));
+            else cabinLabel.setGraphic(new ImageView(movingDoor));
+        }
+        else cabinLabel.setGraphic(new ImageView(closedDoor));
 
 
         doors = new VBox(legend, floorGrid, cabinLabel);
@@ -264,7 +275,6 @@ class ElevatorGUI {
             else type = Type.FLOOR;
             currentRequest = new Request(comboBox.getValue(), type);
             requestFlag = true;
-            //System.out.println("New Request to send Elevator to Floor " + comboBox.getValue());
         });
         gridPane.addRow(0, goToFloor, comboBox, typeComboBox, goToFloorButton);
 
@@ -277,7 +287,10 @@ class ElevatorGUI {
         Label maintenanceKeyLabel = new Label("Maintenance Key: ");
         CheckBox maintenanceBool = new CheckBox();
         if(isDisabled) maintenanceBool.setDisable(true);
-        maintenanceBool.setOnAction(e -> maintenanceKey = maintenanceBool.isSelected());
+        maintenanceBool.setOnAction(e ->
+        {
+            maintenanceKey = maintenanceBool.isSelected();
+        });
 
         gridPane.addRow(2, maintenanceKeyLabel, maintenanceBool);
 
@@ -352,7 +365,10 @@ class ElevatorGUI {
 
     void setDoorArray(ArrayList<Door> doorList) { this.doorList = doorList; }
 
-    void setCabinDoorList(ArrayList<Door> cabinDoorList) { this.cabinDoorList = cabinDoorList; }
+    void setCabinDoorList(ArrayList<Door> cabinDoorList)
+    {
+        this.cabinDoorList = cabinDoorList;
+    }
 
     Request getCurrentRequest()
     {

@@ -50,7 +50,6 @@ public class ControlPanel extends Thread
             if(controller != null)
             {
                 fireAlarm = controller.getFireAlarm();
-                if(fireAlarm) controller.setAllLocks(true);
             }
         }
     }
