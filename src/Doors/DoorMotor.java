@@ -15,13 +15,13 @@ public class DoorMotor extends Thread {
     public void run() {
         if(door.shouldDoorClosed(door) && canDoorClose){
             door.closeDoors(door);
-            sleep(2000);
+            sleep(20);
         }
         else if(door.shouldDoorOpen(door) && canDoorOpen){
             door.shouldDoorOpen(door);
-            sleep(2000);
+            sleep(20);
         }
-        sleep(2000);
+        sleep(20);
     }
 
     private void sleep(int sec) {

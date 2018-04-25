@@ -133,7 +133,7 @@ public class DoorController {
     }
 
     public void closeDoorAtCabin(int floorDoor, boolean shouldClose){
-        cabinDoors.get(floorDoor).setDoorOpen(shouldClose);
+        cabinDoors.get(floorDoor-1).setDoorOpen(shouldClose);
     }
 
     public ArrayList<Door> getDoorList(int elevator)

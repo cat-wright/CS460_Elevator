@@ -42,7 +42,7 @@ public class Door {
     public void openDoors(Door door){
         door.doorState = DoorState.OPENING;
         javax.swing.Timer swingTimer = new javax.swing.Timer(
-                2000,
+                20,
                 new ActionListener(){
 
                     @Override
