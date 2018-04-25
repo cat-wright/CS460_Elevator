@@ -88,15 +88,13 @@ public class BuildingControl
 
 
         e.moveCabin(currentRequest.getDestination());
-        while (isCabinMoving(e)) {
-            cP.buildElevatorSpecs(isCabinMoving(e), e.getCabinLocation(), currentRequest.getDirection());
-        }
+//        while (isCabinMoving(e)) {
+//            cP.buildElevatorSpecs(isCabinMoving(e), e.getCabinLocation(), currentRequest.getDirection());
+//        }
         currentFloor = e.getCabinLocation();
         //while(!e.isAtFloor()){}
         dC.openDoorAtES(e.getCabinLocation(),e.getCabinNumer(),true);
         dC.openDoorAtCabin(e.getCabinNumer(), true);
-        cP.buildElevatorSpecs(isCabinMoving(e), e.getCabinLocation(), currentRequest.getDirection());
-
     }
 
   }
@@ -117,20 +115,30 @@ public class BuildingControl
       cP.setDoorList(dC.getDoorList(4),4);
   }
 
+  void setCabins()
+  {
+      cP.setCabin(e1, 1);
+      cP.setCabin(e2, 2);
+      cP.setCabin(e3, 3);
+      cP.setCabin(e4, 4);
+  }
+
   void setLobbies()
   {
       cP.setLobbyList(fR.getAllFloors());
   }
 
-    private static void testSwingTimer(){
-        BuildingControl bP = new BuildingControl(1);
-        bP.setCabinButtons();
-        bP.setDoors();
-        bP.setLobbies();
-        cP.start();
-        javax.swing.Timer swingTimer = new javax.swing.Timer(
-                10,
-                new ActionListener(){
+  private static void testSwingTimer()
+  {
+      BuildingControl bP = new BuildingControl(1);
+      bP.setCabinButtons();
+      bP.setDoors();
+      bP.setLobbies();
+      bP.setCabins();
+      cP.start();
+      javax.swing.Timer swingTimer = new javax.swing.Timer(
+              100,
+              new ActionListener(){
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -144,16 +152,16 @@ public class BuildingControl
                         bP.checkCabbinRequests(bP.e4);
                         bP.sendToFloor(bP.e4);
                     }
-                });
-        swingTimer.setInitialDelay(5000);
-        swingTimer.start();
+              });
+      swingTimer.setInitialDelay(5000);
+      swingTimer.start();
     }
+
   public static void main(final String[] args)
   {
       //BuildingControl bP = new BuildingControl(1);
       //cP.start();
       testSwingTimer();
-
   }
 
 }

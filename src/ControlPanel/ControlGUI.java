@@ -51,17 +51,8 @@ class ControlGUI extends Application {
         emergencyButton.getStyleClass().add("fire_alarm");
         emergencyButton.setOnAction(e -> fireAlarm = true);
         HBox elevatorPanels = new HBox(e1.getElevatorVBox(), e2.getElevatorVBox(), e3.getElevatorVBox(), e4.getElevatorVBox());
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                for(ElevatorGUI eGUI : elevatorGUIS)
-                {
-                    eGUI.repaint();
-                }
-            }
-        };
 
-        timer.start();
+        startAnimation();
 
         elevatorPanels.setSpacing(20);
         containingScreen.getChildren().addAll(elevatorPanels, emergencyButton);
@@ -74,18 +65,38 @@ class ControlGUI extends Application {
         primaryStage.show();
     }
 
+    void startAnimation()
+    {
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                for(ElevatorGUI eGUI : elevatorGUIS)
+                {
+                    eGUI.repaint();
+                }
+            }
+        };
+
+        timer.start();
+    }
+
     ElevatorGUI getElevator(int elevatorNumber)
     {
         return elevatorGUIS[elevatorNumber-1];
     }
 
-    Request getRequest(int elevatorNumber) {
-        return elevatorGUIS[elevatorNumber-1].getCurrentRequest();
-//        if(elevatorNumber == 1) return e1.getCurrentRequest();
-//        if(elevatorNumber == 2) return e2.getCurrentRequest();
-//        if(elevatorNumber == 3) return e3.getCurrentRequest();
-//        if(elevatorNumber == 4) return e4.getCurrentRequest();
-//        else return null;
+    Request getRequest(int elevatorNumber)
+    {
+        if(elevatorGUIS[elevatorNumber-1].getRequestFlag())
+        {
+            return elevatorGUIS[elevatorNumber-1].getCurrentRequest();
+        }
+        else return null;
+    }
+
+    void setCabin(Cabin.Cabin cabin, int elevatorNumber)
+    {
+        elevatorGUIS[elevatorNumber-1].setCabin(cabin);
     }
 
     void setCabinList(ArrayList<Boolean> cabinList, int elevatorNumber)
@@ -106,11 +117,6 @@ class ControlGUI extends Application {
     boolean isLocked(int elevatorNumber)
     {
         return elevatorGUIS[elevatorNumber-1].getLock();
-//        if(elevatorNumber == 1) return e1.getLock();
-//        if(elevatorNumber == 2) return e2.getLock();
-//        if(elevatorNumber == 3) return e3.getLock();
-//        if(elevatorNumber == 4) return e4.getLock();
-//        return false;
     }
 
     Boolean[] updateLockedElevators()

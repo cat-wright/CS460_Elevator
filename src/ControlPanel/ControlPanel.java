@@ -17,9 +17,8 @@ import java.util.List;
 public class ControlPanel extends Thread
 {
     private volatile boolean finished = false;
-    private ControlGUI controller;
+    private volatile ControlGUI controller;
     private int floors, elevators;
-    private ElevatorSpecs specs = new ElevatorSpecs(false,  1, null);
 
     private boolean fireAlarm = false;
     private Boolean[] lockedElevators = {false, false, false, false};
@@ -48,39 +47,44 @@ public class ControlPanel extends Thread
     {
         while(!finished)
         {
-            if(controller != null) {
-                for(int i = 0; i < elevators; i++)
-                {
-                    //edited here-Dominic
-                    controller.getElevator(i+1).setSpecs(specs);
-                }
+            if(controller != null)
+            {
+//                for(int i = 0; i < elevators; i++)
+//                {
+//                    controller.getElevator(i+1).setSpecs(specs);
+//                }
+//                controller.getElevator(1).setSpecs(specs1);
+//                controller.getElevator(2).setSpecs(specs2);
+//                controller.getElevator(3).setSpecs(specs3);
+//                controller.getElevator(4).setSpecs(specs4);
+
                 fireAlarm = controller.getFireAlarm();
             }
         }
     }
 
+    public void setCabin(Cabin.Cabin cabin, int elevatorNumber)
+    {
+        while(controller == null) {}
+        controller.setCabin(cabin, elevatorNumber);
+    }
+
     public void setCabinList(ArrayList<Boolean> cabinList, int elevatorNumber)
     {
-        if(controller != null)
-        {
-            controller.setCabinList(cabinList, elevatorNumber);
-        }
+        while(controller == null) {}
+        controller.setCabinList(cabinList, elevatorNumber);
     }
 
     public void setLobbyList(ArrayList<Floor> lobbyList)
     {
-        if(controller != null)
-        {
-            controller.setLobbyList(lobbyList);
-        }
+        while(controller == null) {}
+        controller.setLobbyList(lobbyList);
     }
 
     public void setDoorList(ArrayList<Door> doorList, int elevatorNumber)
     {
-        if(controller != null)
-        {
-            controller.setDoorList(doorList, elevatorNumber);
-        }
+        while(controller == null) {}
+        controller.setDoorList(doorList, elevatorNumber);
     }
 
     public Boolean[] getLockedElevators()
@@ -133,20 +137,13 @@ public class ControlPanel extends Thread
      */
     public Request getRequest(int elevatorNumber)
     {
-        return controller.getRequest(elevatorNumber);
-    }
-    //
-
-    //INFORMATION PASSED FROM BUILDING CONTROL TO CONTROL PANEL
-    /**
-     * called by building control with all current information about the elevator (currently only one elevator)
-     * @param isMoving true if the elevator is currently in motion
-     * @param currentFloor the current floor the cabin is on
-     * @param direction the current direction of the cabin
-     */
-    public void buildElevatorSpecs(boolean isMoving, Integer currentFloor, Directions direction)
-    {
-        specs = new ElevatorSpecs(isMoving, currentFloor, direction);
+        Request request = controller.getRequest(elevatorNumber);
+        if(request != null)
+        {
+            controller.getElevator(elevatorNumber).setRequestFlag(false);
+            return request;
+        }
+        else return null;
     }
 
     void shutdown()

@@ -10,7 +10,6 @@ import java.util.List;
  */
 public class Cabin
 {
-
     private Integer cabinLocation;
     private Directions direction;
     private boolean isMoving;
