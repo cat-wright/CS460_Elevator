@@ -129,7 +129,7 @@ public class BuildingControl
         bP.setLobbies();
         cP.start();
         javax.swing.Timer swingTimer = new javax.swing.Timer(
-                1,
+                10,
                 new ActionListener(){
 
                     @Override
