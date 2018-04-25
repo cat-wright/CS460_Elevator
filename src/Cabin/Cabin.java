@@ -162,7 +162,9 @@ public class Cabin
 
     public boolean isAtFloor ()
     {
-        if(motion.isAtFloor()) {return true;}
-        return false;
+        if(motion.isAtFloor())
+            return true;
+        else
+            return false;
     }
 }
