@@ -94,7 +94,7 @@ public class BuildingControl
         currentFloor = e.getCabinLocation();
         //while(!e.isAtFloor()){}
         dC.openDoorAtES(e.getCabinLocation(),e.getCabinNumer(),true);
-        dC.openDoorAtCabin(e.getCabinLocation(), true);
+        dC.openDoorAtCabin(e.getCabinNumer(), true);
         cP.buildElevatorSpecs(isCabinMoving(e), e.getCabinLocation(), currentRequest.getDirection());
 
     }
