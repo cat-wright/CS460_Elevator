@@ -110,7 +110,7 @@ public class DoorController {
     }
 
     public void openDoorAtCabin(int floorDoor, boolean shouldOpen){
-        cabinDoors.get(floorDoor).setDoorOpen(shouldOpen);
+        cabinDoors.get(floorDoor-1).setDoorOpen(shouldOpen);
     }
 
     public void closeDoorAtES(int floorDoor, int es, boolean shouldClose){
