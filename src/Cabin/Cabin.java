@@ -30,7 +30,7 @@ public class Cabin
         this.isMoving = false;
     }
 
-    public int getCabinNumer ()
+    public int getCabinNumer()
     {
         return cabinNumber;
     }
@@ -65,8 +65,26 @@ public class Cabin
         }
 
         System.out.println("At Destination");
+        changeLights();
+
+
         isMoving = false;
         printIsMoving();
+    }
+
+    private void changeLights()
+    {
+        ArrayList<Boolean> cabinButtons = getAllButtons();
+        for(int i = 0; i < 10; i++)
+        {
+            if(cabinButtons.get(i))
+            {
+                if(cabinLocation == i+1)
+                {
+                    cabinButtons.set(i, false);
+                }
+            }
+        }
     }
 
     /**

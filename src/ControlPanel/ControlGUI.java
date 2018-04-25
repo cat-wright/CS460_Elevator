@@ -109,6 +109,14 @@ class ControlGUI extends Application {
         for(ElevatorGUI eGUI : elevatorGUIS) eGUI.setLobbyButtons(lobbyList);
     }
 
+    void setCabinDoorList(ArrayList<Door> cabinDoorList)
+    {
+        for(int i = 0; i < maxElevators; i++)
+        {
+            elevatorGUIS[i].setCabinDoorList(cabinDoorList);
+        }
+    }
+
     void setDoorList(ArrayList<Door> doorList, int elevatorNumber)
     {
         elevatorGUIS[elevatorNumber-1].setDoorArray(doorList);

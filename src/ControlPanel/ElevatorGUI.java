@@ -45,6 +45,7 @@ class ElevatorGUI {
     private List<Floor> lobbyList;
     private List<Boolean> cabinList;
     private List<Door> doorList;
+    private List<Door> cabinDoorList;
 
     ElevatorGUI(int floors, int elevatorNumber, boolean disabled, double imgWidth)
     {
@@ -97,8 +98,6 @@ class ElevatorGUI {
         elevatorVBox.setSpacing(5);
     }
 
-   // void setSpecs(ElevatorSpecs specs) { this.specs = specs; }
-
     private GridPane cabinButtonStatus()
     {
         Image button = new Image(getClass().getResource("/Button_Grey.png").toString(), blockSize, blockSize, false, false);
@@ -132,6 +131,27 @@ class ElevatorGUI {
         GridPane gridPane = new GridPane();
         Image upArrow = new Image(getClass().getResource("/up_arrow.png").toString(), blockSize, blockSize, false, false);
         Image downArrow = new Image(getClass().getResource("/down_arrow.png").toString(), blockSize, blockSize, false, false);
+
+        for(int i = 0; i < NUM_FLOORS; i++)
+        {
+            if(lobbyList != null)
+            {
+                if(lobbyList.get(i).isUpButton())
+                {
+                    if(cabin.getCabinLocation() == i+1 && cabin.getDirection() == Directions.UP)
+                    {
+                        lobbyList.get(i).setUpButton(false);
+                    }
+                }
+                else if(lobbyList.get(i).isDownButton())
+                {
+                    if(cabin.getCabinLocation() == i+1 && cabin.getDirection() == Directions.DOWN)
+                    {
+                        lobbyList.get(i).setDownButton(false);
+                    }
+                }
+            }
+        }
 
         int rows = 0;
         while(rows < 2)
@@ -331,6 +351,8 @@ class ElevatorGUI {
     void setLobbyButtons(ArrayList<Floor> lobbyList) { this.lobbyList = lobbyList; }
 
     void setDoorArray(ArrayList<Door> doorList) { this.doorList = doorList; }
+
+    void setCabinDoorList(ArrayList<Door> cabinDoorList) { this.cabinDoorList = cabinDoorList; }
 
     Request getCurrentRequest()
     {

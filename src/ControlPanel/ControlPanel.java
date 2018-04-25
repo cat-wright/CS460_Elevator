@@ -49,16 +49,8 @@ public class ControlPanel extends Thread
         {
             if(controller != null)
             {
-//                for(int i = 0; i < elevators; i++)
-//                {
-//                    controller.getElevator(i+1).setSpecs(specs);
-//                }
-//                controller.getElevator(1).setSpecs(specs1);
-//                controller.getElevator(2).setSpecs(specs2);
-//                controller.getElevator(3).setSpecs(specs3);
-//                controller.getElevator(4).setSpecs(specs4);
-
                 fireAlarm = controller.getFireAlarm();
+                if(fireAlarm) controller.setAllLocks(true);
             }
         }
     }
@@ -79,6 +71,12 @@ public class ControlPanel extends Thread
     {
         while(controller == null) {}
         controller.setLobbyList(lobbyList);
+    }
+
+    public void setCabinDoorList(ArrayList<Door> cabinDoorList)
+    {
+        while(controller == null) {}
+        controller.setCabinDoorList(cabinDoorList);
     }
 
     public void setDoorList(ArrayList<Door> doorList, int elevatorNumber)

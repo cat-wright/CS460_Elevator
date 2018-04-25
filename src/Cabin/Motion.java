@@ -1,6 +1,6 @@
 package Cabin;
 
-public class Motion extends Thread{
+public class Motion extends Thread {
 
     private Integer cabinLocation = 1;
     private Motor motor;
@@ -19,7 +19,6 @@ public class Motion extends Thread{
     public boolean isAtFloor() {
         return motor.getAtFloor();
     }
-
 
     public int getCabinLocation() {
         return motor.getCurrentFloor();
