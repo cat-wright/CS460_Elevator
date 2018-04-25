@@ -160,21 +160,60 @@ public class BuildingControl
                     public void actionPerformed(ActionEvent e) {
                         if(cP.isFireAlarm() || emergency.isEmergency())
                         {
+                            if(!cP.getMaintenanceKeys()[0] && !cP.getMaintenanceKeys()[1] && !cP.getMaintenanceKeys()[2] && !cP.getMaintenanceKeys()[3])
+                            {
+                                bP.floor1();
+                            }
+                            if(cP.getMaintenanceKeys()[0])
+                            {
+                                bP.checkCabbinRequests(bP.e1, false);
+                                bP.sendToFloor(bP.e1);
+                            }
 
-                           bP.floor1();
+                            if(cP.getMaintenanceKeys()[1])
+                            {
+                                bP.checkCabbinRequests(bP.e2, false);
+                                bP.sendToFloor(bP.e2);
+                            }
+
+                            if(cP.getMaintenanceKeys()[2])
+                            {
+                                bP.checkCabbinRequests(bP.e3, false);
+                                bP.sendToFloor(bP.e3);
+                            }
+
+                            if(cP.getMaintenanceKeys()[3])
+                            {
+                                bP.checkCabbinRequests(bP.e4, false);
+                                bP.sendToFloor(bP.e4);
+                            }
+
                         }
-                        //else if (cP.getLockedElevators()[0] )
+
                         else {
 
                             bP.checkFloorRequests();
-                            bP.checkCabbinRequests(bP.e1,true);
-                            bP.sendToFloor(bP.e1);
-                            bP.checkCabbinRequests(bP.e2, true);
-                            bP.sendToFloor(bP.e2);
-                            bP.checkCabbinRequests(bP.e3, true);
-                            bP.sendToFloor(bP.e3);
-                            bP.checkCabbinRequests(bP.e4, true);
-                            bP.sendToFloor(bP.e4);
+
+                            if(!cP.getLockedElevators()[0]) {
+
+                                bP.checkCabbinRequests(bP.e1, true);
+                                bP.sendToFloor(bP.e1);
+                            }
+
+                            if(!cP.getLockedElevators()[1]) {
+                                bP.checkCabbinRequests(bP.e2, true);
+                                bP.sendToFloor(bP.e2);
+                            }
+
+                            if(!cP.getLockedElevators()[2]) {
+                                bP.checkCabbinRequests(bP.e3, true);
+                                bP.sendToFloor(bP.e3);
+                            }
+
+                            if(!cP.getLockedElevators()[3]) {
+                                bP.checkCabbinRequests(bP.e4, true);
+                                bP.sendToFloor(bP.e4);
+                            }
                         }
                     }
               });
