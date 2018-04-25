@@ -273,8 +273,17 @@ class ElevatorGUI {
             Type type;
             if(typeComboBox.getValue().equals("Cabin")) type = Type.CABIN;
             else type = Type.FLOOR;
+
             currentRequest = new Request(comboBox.getValue(), type);
             requestFlag = true;
+
+            int floor = comboBox.getValue();
+            if(type == Type.CABIN) cabinList.set(floor-1, true);
+            else
+            {
+                if(typeComboBox.getValue().equals("Up")) lobbyList.get(floor-1).setUpButton(true);
+                else if (typeComboBox.getValue().equals("Down")) lobbyList.get(floor-1).setDownButton(true);
+            }
         });
         gridPane.addRow(0, goToFloor, comboBox, typeComboBox, goToFloorButton);
 
