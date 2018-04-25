@@ -14,6 +14,7 @@ public class DoorController {
     private ArrayList<Door> doorList2 = new ArrayList<>();
     private ArrayList<Door> doorList3 = new ArrayList<>();
     private ArrayList<Door> doorList4 = new ArrayList<>();
+    private ArrayList<Door> cabinDoorList = new ArrayList<>();
 
     public DoorController (){
         genDoors(10, DoorType.FLOOR, elevatorShaft1);
@@ -30,6 +31,7 @@ public class DoorController {
         setDoorList(elevatorShaft2, doorList2);
         setDoorList(elevatorShaft3, doorList3);
         setDoorList(elevatorShaft4, doorList4);
+        setCabinDoorList(cabinDoors);
     }
 
     public void startDoors(List<DoorMotor> doorMotors){
@@ -50,6 +52,19 @@ public class DoorController {
         {
             doorList.add(elevatorShaft.get(i).getDoor());
         }
+    }
+
+    public void setCabinDoorList(ArrayList<DoorMotor> cabins)
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            cabinDoorList.add(cabins.get(i).getDoor());
+        }
+    }
+
+    public ArrayList<Door> getCabinDoorList()
+    {
+        return cabinDoorList;
     }
     public DoorState checkADoorES(int floorDoor, int es){
         if(floorDoor < 0 || floorDoor > 9){

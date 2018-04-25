@@ -5,9 +5,10 @@ import Doors.DoorState;
 import Floors.FloorRequests;
 import Request.Request;
 import Request.StateController;
-
+import Emergency.Emergency;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Created by Dominic on 4/4/2018.
@@ -23,6 +24,7 @@ public class BuildingControl
   StateController sC = new StateController(e1, e2, e3, e4);
   DoorController dC = new DoorController();
   FloorRequests fR = new FloorRequests(10);
+  static Emergency emergency = new Emergency();
   private Request requestedFloor;
   private Integer currentFloor;
 
@@ -46,15 +48,15 @@ public class BuildingControl
 
   private void setCurrentFloor(Integer floor) { this.currentFloor = floor; }
   
-  private void checkCabbinRequests(Cabin e) {
+  private void checkCabbinRequests(Cabin e, boolean maintenance) {
+      if(maintenance) {
+          requestedFloor = e.cabinRequest();
 
-      requestedFloor = e.cabinRequest();
-
-      if (requestedFloor != null) //&& requestedFloor.getDestination() != currentFloor)
-      {
-          sC.addToQue(requestedFloor, e.getCabinNumer());
+          if (requestedFloor != null) //&& requestedFloor.getDestination() != currentFloor)
+          {
+              sC.addToQue(requestedFloor, e.getCabinNumer());
+          }
       }
-
       requestedFloor = cP.getRequest(e.getCabinNumer());
       if (requestedFloor != null) //&& requestedFloor.getDestination() != currentFloor)
       {
@@ -128,6 +130,19 @@ public class BuildingControl
       cP.setLobbyList(fR.getAllFloors());
   }
 
+  void setCabinDoors()
+    {
+        cP.setCabinDoorList(dC.getCabinDoorList());
+    }
+
+  void floor1()
+  {
+      if(e1.getCabinLocation() != 1 ){e1.moveCabin(1);}
+      if(e2.getCabinLocation() != 1 ){e2.moveCabin(1);}
+      if(e3.getCabinLocation() != 1 ){e3.moveCabin(1);}
+      if(e4.getCabinLocation() != 1 ){e4.moveCabin(1);}
+  }
+
   private static void testSwingTimer()
   {
       BuildingControl bP = new BuildingControl(1);
@@ -135,6 +150,7 @@ public class BuildingControl
       bP.setDoors();
       bP.setLobbies();
       bP.setCabins();
+      bP.setCabinDoors();
       cP.start();
       javax.swing.Timer swingTimer = new javax.swing.Timer(
               100,
@@ -142,15 +158,24 @@ public class BuildingControl
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        bP.checkFloorRequests();
-                        bP.checkCabbinRequests(bP.e1);
-                        bP.sendToFloor(bP.e1);
-                        bP.checkCabbinRequests(bP.e2);
-                        bP.sendToFloor(bP.e2);
-                        bP.checkCabbinRequests(bP.e3);
-                        bP.sendToFloor(bP.e3);
-                        bP.checkCabbinRequests(bP.e4);
-                        bP.sendToFloor(bP.e4);
+                        if(cP.isFireAlarm() || emergency.isEmergency())
+                        {
+
+                           bP.floor1();
+                        }
+                        //else if (cP.getLockedElevators()[0] )
+                        else {
+
+                            bP.checkFloorRequests();
+                            bP.checkCabbinRequests(bP.e1,true);
+                            bP.sendToFloor(bP.e1);
+                            bP.checkCabbinRequests(bP.e2, true);
+                            bP.sendToFloor(bP.e2);
+                            bP.checkCabbinRequests(bP.e3, true);
+                            bP.sendToFloor(bP.e3);
+                            bP.checkCabbinRequests(bP.e4, true);
+                            bP.sendToFloor(bP.e4);
+                        }
                     }
               });
       swingTimer.setInitialDelay(5000);
