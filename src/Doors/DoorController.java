@@ -36,7 +36,7 @@ public class DoorController {
 
     public void startDoors(List<DoorMotor> doorMotors){
         for(DoorMotor i: doorMotors){
-            i.setDoorOpen(true);
+            i.setDoorOpen(false);
             i.setDoorClose(true);
             i.run();
         }
@@ -72,10 +72,24 @@ public class DoorController {
         if(floorDoor < 0 || floorDoor > 9){
             return null;
         }
-        if(es == 1) {return elevatorShaft1.get(floorDoor).getDoorState();}
-        if(es == 2) {return elevatorShaft2.get(floorDoor).getDoorState();}
-        if(es == 3) {return elevatorShaft3.get(floorDoor).getDoorState();}
-        if(es == 4) {return elevatorShaft4.get(floorDoor).getDoorState();}
+        if(es == 1) {
+            elevatorShaft1.get(floorDoor).run();
+            return elevatorShaft1.get(floorDoor).getDoorState();
+        }
+        if(es == 2) {
+            elevatorShaft2.get(floorDoor).run();
+            return elevatorShaft2.get(floorDoor).getDoorState();
+        }
+        if(es == 3) {
+
+            elevatorShaft3.get(floorDoor).run();
+            return elevatorShaft3.get(floorDoor).getDoorState();
+        }
+        if(es == 4) {
+
+            elevatorShaft4.get(floorDoor).run();
+            return elevatorShaft4.get(floorDoor).getDoorState();
+        }
         return null;
     }
 
@@ -83,6 +97,8 @@ public class DoorController {
         if(cabinDoor < 0 || cabinDoor > 3){
             return null;
         }
+
+        cabinDoors.get(cabinDoor).run();
         return cabinDoors.get(cabinDoor).getDoorState();
     }
 

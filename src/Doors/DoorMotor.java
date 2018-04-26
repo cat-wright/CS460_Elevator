@@ -27,6 +27,7 @@ public class DoorMotor extends Thread {
             sleep(20);
             canDoorOpen = false;
         }
+        sleep(20);
     }
 
     private void sleep(int sec) {
