@@ -142,7 +142,7 @@ public class DoorController {
         }
         if(es == 4) {
             elevatorShaft4.get(floorDoor).setDoorClose(shouldClose);
-            elevatorShaft1.get(floorDoor).run();
+            elevatorShaft4.get(floorDoor).run();
         }
     }
 

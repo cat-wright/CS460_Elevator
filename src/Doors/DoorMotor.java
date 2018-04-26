@@ -16,17 +16,13 @@ public class DoorMotor extends Thread {
 
     @Override
     public void run() {
-        if(shouldDoorClosed()){
+        if(shouldDoorClosed()&& canDoorClose){
             closeDoors();
-
-            sleep(20);
             canDoorClose = false;
-        } else if(shouldDoorOpen()){
+        } else if(shouldDoorOpen() && canDoorOpen){
             openDoors();
-
-            sleep(20);
             canDoorOpen = false;
-        }
+        }else
         sleep(20);
     }
 
@@ -72,7 +68,7 @@ public class DoorMotor extends Thread {
     }
 
     public boolean shouldDoorClosed(){
-        if(door.getDoorState().equals(DoorState.OPENED) && canDoorClose)
+        if(door.getDoorState().equals(DoorState.OPENED))
         {
             // System.out.println("Doors can be closed");
             return true;
@@ -81,7 +77,7 @@ public class DoorMotor extends Thread {
     }
 
     public boolean shouldDoorOpen(){
-        if(door.getDoorState().equals(DoorState.CLOSED) && canDoorOpen){
+        if(door.getDoorState().equals(DoorState.CLOSED)){
             //System.out.println("Doors can be opened");
             return true;
         }
