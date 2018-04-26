@@ -10,8 +10,8 @@ public class DoorMotor extends Thread {
 
     public DoorMotor (DoorType type){
         this.door = new Door(type);
-        this.canDoorOpen = false;
-        this.canDoorClose = false;
+        this.canDoorOpen = true;
+        this.canDoorClose = true;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class DoorMotor extends Thread {
 
         door.setDoorState(DoorState.CLOSING);
         javax.swing.Timer swingTimer = new javax.swing.Timer(
-                0,
+                20,
                 new ActionListener(){
 
                     @Override
@@ -57,7 +57,7 @@ public class DoorMotor extends Thread {
     public void openDoors(){
         door.setDoorState(DoorState.OPENING);
         javax.swing.Timer swingTimer = new javax.swing.Timer(
-                0,
+                20,
                 new ActionListener(){
 
                     @Override
