@@ -27,7 +27,7 @@ public class CabinAlignment{
             else if (targetFloor >= elevatorPosition + .001) //within 1 cm of floor
                 break;
         }
-        System.out.println("Aligned");
+        //System.out.println("Aligned");
     }
 
     public double move() {

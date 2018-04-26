@@ -74,16 +74,23 @@ public class BuildingControl
   
   private void sendToFloor(Cabin e)
   {
-      while (isCabinMoving(e)) { }
-      if(dC.checkACabinDoor(e.getCabinNumer()) != DoorState.CLOSED){dC.closeDoorAtCabin(e.getCabinNumer(), true);}
-      if(dC.checkADoorES((e.getCabinLocation()-1), e.getCabinNumer()) != DoorState.CLOSED)
-      {
-          dC.closeDoorAtES((e.getCabinLocation()-1),e.getCabinNumer(), true);
+      while (isCabinMoving(e)) {
+          try {
+              Thread.sleep(200);
+          } catch (Exception ex) {}
       }
-      while(dC.checkACabinDoor(e.getCabinNumer()) != DoorState.CLOSED && dC.checkADoorES((e.getCabinLocation()-1), e.getCabinNumer()) != DoorState.CLOSED)
+      //if(dC.checkACabinDoor(e.getCabinNumer()) != DoorState.CLOSED)
+      //{
+          dC.closeDoorAtCabin(e.getCabinNumer(), true);
+      //}
+      //if(dC.checkADoorES((e.getCabinLocation()-1), e.getCabinNumer()) != DoorState.CLOSED)
+      //{
+          dC.closeDoorAtES((e.getCabinLocation()-1),e.getCabinNumer(), true);
+      //}
+      /*while(dC.checkACabinDoor(e.getCabinNumer()) != DoorState.CLOSED && dC.checkADoorES((e.getCabinLocation()-1), e.getCabinNumer()) != DoorState.CLOSED)
       {
 
-      }
+      }*/
       Request currentRequest = sC.getRequest(e.getCabinNumer());
 
     if(currentRequest != null) {
@@ -94,12 +101,12 @@ public class BuildingControl
 //            cP.buildElevatorSpecs(isCabinMoving(e), e.getCabinLocation(), currentRequest.getDirection());
 //        }
         currentFloor = e.getCabinLocation();
-        while(!e.isAtFloor()){
+        /*while(!e.isAtFloor()){
             try {
                 Thread.sleep(200);
             } catch (Exception ex) {}
         }
-        System.out.println("Exited");
+        System.out.println("Exited");*/
         dC.openDoorAtES(e.getCabinLocation(),e.getCabinNumer(),true);
         dC.openDoorAtCabin(e.getCabinNumer(), true);
     }
@@ -158,7 +165,7 @@ public class BuildingControl
       bP.setCabinDoors();
       cP.start();
       javax.swing.Timer swingTimer = new javax.swing.Timer(
-              100,
+              200,
               new ActionListener(){
 
                     @Override

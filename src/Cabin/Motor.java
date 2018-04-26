@@ -33,7 +33,7 @@ public class Motor extends Thread{
                         break;
                 }
                 if (i == floorToMoveTo) {
-                    System.out.println("Aligning");
+                    //System.out.println("Aligning");
                     CabinAlignment ca = new CabinAlignment(false, i, elevatorPosition);
                     ca.align();
                 }
@@ -51,7 +51,7 @@ public class Motor extends Thread{
                         break;
                 }
                 if (i == floorToMoveTo) {
-                    System.out.println("Aligning");
+                    //System.out.println("Aligning");
                     CabinAlignment ca = new CabinAlignment(true, i, elevatorPosition);
                     ca.align();
                 }

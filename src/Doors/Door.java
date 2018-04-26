@@ -25,12 +25,12 @@ public class Door {
 
         door.doorState = DoorState.CLOSING;
         javax.swing.Timer swingTimer = new javax.swing.Timer(
-                2000,
+                1000,
                 new ActionListener(){
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("Door is " + doorState.toString());
+                        //System.out.println("Door is " + doorState.toString());
                         door.doorState = DoorState.CLOSED;
 
                     }

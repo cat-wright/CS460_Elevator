@@ -44,16 +44,16 @@ public class Cabin
     {
         if (cabinLocation == floorToMoveTo)
         {
-            System.out.println("You are already on this floor.");
+            //System.out.println("You are already on this floor.");
             isMoving = false;
-            printIsMoving();
+            //printIsMoving();
             return;
         }
         else
         {
-            System.out.println("Moving to floor " + floorToMoveTo);
+            //System.out.println("Moving to floor " + floorToMoveTo);
             isMoving = true;
-            printIsMoving();
+            //printIsMoving();
 
             if (cabinLocation < floorToMoveTo)
             {
@@ -69,7 +69,7 @@ public class Cabin
 
 
         isMoving = false;
-        printIsMoving();
+        //printIsMoving();
     }
 
     private void changeLights()
