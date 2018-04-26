@@ -36,6 +36,8 @@ public class DoorController {
 
     public void startDoors(List<DoorMotor> doorMotors){
         for(DoorMotor i: doorMotors){
+            i.setDoorOpen(true);
+            i.setDoorClose(true);
             i.run();
         }
     }
@@ -77,27 +79,6 @@ public class DoorController {
         return null;
     }
 
-    public DoorState checkADoorES2(int floorDoor){
-        if(floorDoor < 0 || floorDoor > 9){
-            return null;
-        }
-        return elevatorShaft2.get(floorDoor).getDoorState();
-    }
-
-    public DoorState checkADoorES3(int floorDoor){
-        if(floorDoor < 0 || floorDoor > 9){
-            return null;
-        }
-        return elevatorShaft3.get(floorDoor).getDoorState();
-    }
-
-    public DoorState checkADoorES4(int floorDoor){
-        if(floorDoor < 0 || floorDoor > 9){
-            return null;
-        }
-        return elevatorShaft4.get(floorDoor).getDoorState();
-    }
-
     public DoorState checkACabinDoor(int cabinDoor){
         if(cabinDoor < 0 || cabinDoor > 3){
             return null;
@@ -106,49 +87,52 @@ public class DoorController {
     }
 
     public void openDoorAtES(int floorDoor, int es, boolean shouldOpen){
-        if(es == 1) {elevatorShaft1.get(floorDoor-1).setDoorOpen(shouldOpen);}
-        if(es == 2) {elevatorShaft2.get(floorDoor-1).setDoorOpen(shouldOpen);}
-        if(es == 3) {elevatorShaft3.get(floorDoor-1).setDoorOpen(shouldOpen);}
-        if(es == 4) {elevatorShaft4.get(floorDoor-1).setDoorOpen(shouldOpen);}
+        if(es == 1) {
+            elevatorShaft1.get(floorDoor-1).setDoorOpen(shouldOpen);
+            elevatorShaft1.get(floorDoor-1).run();
+        }
+        if(es == 2) {
+            elevatorShaft2.get(floorDoor-1).setDoorOpen(shouldOpen);
+            elevatorShaft2.get(floorDoor-1).run();
+        }
+        if(es == 3) {
+            elevatorShaft3.get(floorDoor-1).setDoorOpen(shouldOpen);
+            elevatorShaft3.get(floorDoor-1).run();
+        }
+        if(es == 4) {
+            elevatorShaft4.get(floorDoor-1).setDoorOpen(shouldOpen);
+            elevatorShaft4.get(floorDoor-1).run();
+        }
     }
 
-    public void openDoorAtES2(int floorDoor, boolean shouldOpen){
-        elevatorShaft2.get(floorDoor).setDoorOpen(shouldOpen);
-    }
-
-    public void openDoorAtES3(int floorDoor, boolean shouldOpen){
-        elevatorShaft3.get(floorDoor).setDoorOpen(shouldOpen);
-    }
-
-    public void openDoorAtES4(int floorDoor, boolean shouldOpen){
-        elevatorShaft4.get(floorDoor).setDoorOpen(shouldOpen);
-    }
 
     public void openDoorAtCabin(int floorDoor, boolean shouldOpen){
         cabinDoors.get(floorDoor-1).setDoorOpen(shouldOpen);
+        cabinDoors.get(floorDoor-1).run();
     }
 
     public void closeDoorAtES(int floorDoor, int es, boolean shouldClose){
-        if(es == 1) {elevatorShaft1.get(floorDoor).setDoorOpen(shouldClose);}
-        if(es == 2) {elevatorShaft2.get(floorDoor).setDoorOpen(shouldClose);}
-        if(es == 3) {elevatorShaft3.get(floorDoor).setDoorOpen(shouldClose);}
-        if(es == 4) {elevatorShaft4.get(floorDoor).setDoorOpen(shouldClose);}
-    }
-
-    public void closeDoorAtES2(int floorDoor, boolean shouldClose){
-        elevatorShaft2.get(floorDoor).setDoorOpen(shouldClose);
-    }
-
-    public void closeDoorAtES3(int floorDoor, boolean shouldClose){
-        elevatorShaft3.get(floorDoor).setDoorOpen(shouldClose);
-    }
-
-    public void closeDoorAtES4(int floorDoor, boolean shouldClose){
-        elevatorShaft4.get(floorDoor).setDoorOpen(shouldClose);
+        if(es == 1) {
+            elevatorShaft1.get(floorDoor).setDoorClose(shouldClose);
+            elevatorShaft1.get(floorDoor).run();
+        }
+        if(es == 2) {
+            elevatorShaft2.get(floorDoor).setDoorClose(shouldClose);
+            elevatorShaft2.get(floorDoor).run();
+        }
+        if(es == 3) {
+            elevatorShaft3.get(floorDoor).setDoorClose(shouldClose);
+            elevatorShaft3.get(floorDoor).run();
+        }
+        if(es == 4) {
+            elevatorShaft4.get(floorDoor).setDoorClose(shouldClose);
+            elevatorShaft1.get(floorDoor).run();
+        }
     }
 
     public void closeDoorAtCabin(int floorDoor, boolean shouldClose){
-        cabinDoors.get(floorDoor-1).setDoorOpen(shouldClose);
+        cabinDoors.get(floorDoor-1).setDoorClose(shouldClose);
+        cabinDoors.get(floorDoor-1).run();
     }
 
     public ArrayList<Door> getDoorList(int elevator)

@@ -39,37 +39,37 @@ public class Door {
         swingTimer.start();
     }
 
-    public void openDoors(Door door){
-        door.doorState = DoorState.OPENING;
-        javax.swing.Timer swingTimer = new javax.swing.Timer(
-                20,
-                new ActionListener(){
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        System.out.println("Door is " + doorState.toString());
-                        door.doorState = DoorState.OPENED;
-
-                    }
-                });
-        swingTimer.setRepeats(false);
-        swingTimer.start();
-    }
-
-    public boolean shouldDoorClosed(Door door){
-        if(door.doorState.equals(DoorState.OPENED))
-        {
-            //System.out.println("Doors can be closed");
-            return true;
-        }
-        return false;
-    }
-
-    public boolean shouldDoorOpen(Door door){
-        if(door.doorState.equals(DoorState.CLOSED)){
-            //System.out.println("Doors can be opened");
-            return true;
-        }
-        return false;
-    }
+//    public void openDoors(Door door){
+//        door.doorState = DoorState.OPENING;
+//        javax.swing.Timer swingTimer = new javax.swing.Timer(
+//                20,
+//                new ActionListener(){
+//
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        System.out.println("Door is " + doorState.toString());
+//                        door.doorState = DoorState.OPENED;
+//
+//                    }
+//                });
+//        swingTimer.setRepeats(false);
+//        swingTimer.start();
+//    }
+//
+//    public boolean shouldDoorClosed(Door door){
+//        if(door.doorState.equals(DoorState.OPENED))
+//        {
+//            //System.out.println("Doors can be closed");
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    public boolean shouldDoorOpen(Door door){
+//        if(door.doorState.equals(DoorState.CLOSED)){
+//            //System.out.println("Doors can be opened");
+//            return true;
+//        }
+//        return false;
+//    }
 }

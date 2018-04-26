@@ -1,5 +1,8 @@
 package Doors;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 public class DoorMotor extends Thread {
     private Door door;
     private boolean canDoorOpen;
@@ -13,15 +16,17 @@ public class DoorMotor extends Thread {
 
     @Override
     public void run() {
-        if(door.shouldDoorClosed(door) && canDoorClose){
-            door.closeDoors(door);
+        if(shouldDoorClosed()){
+            closeDoors();
+
             sleep(20);
-        }
-        else if(door.shouldDoorOpen(door) && canDoorOpen){
-            door.shouldDoorOpen(door);
+            canDoorClose = false;
+        } else if(shouldDoorOpen()){
+            openDoors();
+
             sleep(20);
+            canDoorOpen = false;
         }
-        sleep(20);
     }
 
     private void sleep(int sec) {
@@ -30,6 +35,56 @@ public class DoorMotor extends Thread {
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void closeDoors(){
+
+        door.setDoorState(DoorState.CLOSING);
+        javax.swing.Timer swingTimer = new javax.swing.Timer(
+                0,
+                new ActionListener(){
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        door.setDoorState(DoorState.CLOSED);
+
+                    }
+                });
+        swingTimer.setRepeats(false);
+        swingTimer.start();
+    }
+
+    public void openDoors(){
+        door.setDoorState(DoorState.OPENING);
+        javax.swing.Timer swingTimer = new javax.swing.Timer(
+                0,
+                new ActionListener(){
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        door.setDoorState(DoorState.OPENED);
+
+                    }
+                });
+        swingTimer.setRepeats(false);
+        swingTimer.start();
+    }
+
+    public boolean shouldDoorClosed(){
+        if(door.getDoorState().equals(DoorState.OPENED) && canDoorClose)
+        {
+            // System.out.println("Doors can be closed");
+            return true;
+        }
+        return false;
+    }
+
+    public boolean shouldDoorOpen(){
+        if(door.getDoorState().equals(DoorState.CLOSED) && canDoorOpen){
+            //System.out.println("Doors can be opened");
+            return true;
+        }
+        return false;
     }
 
     public DoorState getDoorState(){
